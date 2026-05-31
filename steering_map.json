@@ -1,0 +1,7 @@
+{
+  "ai": "AI_STEERING.md",
+  "codeflow": "CODEFLOW.md",
+  "feat": "steering/feat.md",
+  "bug": "steering/bug.md",
+  "refactor": "steering/refactor.md"
+}
