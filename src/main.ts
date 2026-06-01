@@ -29,7 +29,7 @@ async function bootstrap() {
 
   // Configure Swagger
   const config = new DocumentBuilder()
-    .setTitle('DIATY BASE API')
+    .setTitle('QR INVITE API')
     .setDescription('API documentation for the NestJS application')
     .setVersion('1.0')
     .addBearerAuth()
@@ -37,7 +37,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document, {
-    customSiteTitle: 'DIATY BASE API Docs',
+    customSiteTitle: 'QR INVITE API Docs',
     swaggerOptions: {
       persistAuthorization: true,
     },

@@ -3,7 +3,7 @@ export const welcomeHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diaty API</title>
+  <title>QR INVITE API</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -186,7 +186,7 @@ export const welcomeHtml = `<!DOCTYPE html>
 
     <h1>
       Welcome to
-      <span class="highlight">Diaty API</span>
+      <span class="highlight">QR Invite API</span>
     </h1>
 
     <p>

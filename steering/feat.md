@@ -1,6 +1,6 @@
 # Feature Development Steering Context (/feat)
 
-You are tasked with adding a new feature to the **Diaty Base** project. Follow this strict domain-driven, use-case-centric workflow:
+You are tasked with adding a new feature to the **Qr invite be** project. Follow this strict domain-driven, use-case-centric workflow:
 
 ## 1. Directory Structure Rule
 Every new module must follow this architecture:
