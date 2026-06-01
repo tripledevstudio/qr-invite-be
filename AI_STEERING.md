@@ -1,6 +1,6 @@
 # AI Steering & Development Guidelines
 
-This document serves as the core instruction manual for AI coding assistants (and developers) working on the **Diaty Base** project. It outlines the architectural patterns, coding conventions, and folder structures to be strictly followed during feature development, bug fixing, and refactoring.
+This document serves as the core instruction manual for AI coding assistants (and developers) working on the **Qr invite be** project. It outlines the architectural patterns, coding conventions, and folder structures to be strictly followed during feature development, bug fixing, and refactoring.
 
 ## 1. Architectural Pattern & Folder Structure
 The project uses **NestJS** and follows a **Domain-Driven Design (DDD)** inspired modular architecture.
