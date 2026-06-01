@@ -1,3 +1,15 @@
+export enum UserRank {
+  COPPER = 'COPPER',
+  SILVER = 'SILVER',
+  GOLD = 'GOLD',
+  DIAMOND = 'DIAMOND',
+}
+
+export enum UserRole {
+  COLLABORATOR = 'COLLABORATOR',
+  OWNER = 'OWNER',
+}
+
 export class User {
   id: string;
   name: string;
@@ -11,8 +23,14 @@ export class User {
   is_verify: boolean;
   ref_code?: string;
   invite_code?: string;
-  rank?: string;
-  role?: string;
+  rank?: UserRank;
+  role?: UserRole;
+  bonus_current?: number;
+  bonus_pending?: number;
+  bonus_received?: number;
+  avatar?: string;
+  forgot_password_otp?: string;
+  forgot_password_otp_expires_at?: string;
 
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
@@ -20,5 +38,8 @@ export class User {
     if (!this.updated_at) this.updated_at = new Date().toISOString();
     if (this.is_active === undefined) this.is_active = true;
     if (this.is_verify === undefined) this.is_verify = false;
+    if (this.bonus_current === undefined) this.bonus_current = 0;
+    if (this.bonus_pending === undefined) this.bonus_pending = 0;
+    if (this.bonus_received === undefined) this.bonus_received = 0;
   }
 }

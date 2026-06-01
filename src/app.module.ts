@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { CheckInModule } from './checkin/checkin.module';
 import { PaginationModule } from './common/pagination/pagination.module';
 import { StoreModule } from './store/store.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { StoreModule } from './store/store.module';
     CheckInModule,
     PaginationModule,
     StoreModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
