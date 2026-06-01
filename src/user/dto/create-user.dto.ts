@@ -1,4 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEnum, IsOptional } from 'class-validator';
+import { UserRank, UserRole } from '../domain/entities/user.entity';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -16,9 +18,17 @@ export class CreateUserDto {
   @ApiPropertyOptional()
   invite_code?: string;
 
-  @ApiPropertyOptional()
-  rank?: string;
+  @ApiPropertyOptional({ enum: UserRank })
+  @IsOptional()
+  @IsEnum(UserRank)
+  rank?: UserRank;
+
+  @ApiPropertyOptional({ enum: UserRole })
+  @IsOptional()
+  @IsEnum(UserRole)
+  role?: UserRole;
 
   @ApiPropertyOptional()
-  role?: string;
+  @IsOptional()
+  avatar?: string;
 }

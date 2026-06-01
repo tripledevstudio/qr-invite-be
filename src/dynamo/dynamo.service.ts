@@ -6,7 +6,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
-import { USER_TABLE_NAME, CHECK_IN_TABLE_NAME, STORE_TABLE_NAME } from './constants';
+import { USER_TABLE_NAME, CHECK_IN_TABLE_NAME, STORE_TABLE_NAME, PAYMENT_INFO_TABLE_NAME } from './constants';
 
 @Injectable()
 export class DynamoDBService implements OnModuleInit {
@@ -38,7 +38,7 @@ export class DynamoDBService implements OnModuleInit {
   }
 
   private async ensureTablesExist() {
-    const tables = [USER_TABLE_NAME, CHECK_IN_TABLE_NAME, STORE_TABLE_NAME];
+    const tables = [USER_TABLE_NAME, CHECK_IN_TABLE_NAME, STORE_TABLE_NAME, PAYMENT_INFO_TABLE_NAME];
     
     for (const tableName of tables) {
       try {

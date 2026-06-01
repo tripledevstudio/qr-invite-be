@@ -55,6 +55,20 @@ export class DynamoUserRepository implements UserRepository {
     return (result.Items?.[0] as User) ?? null;
   }
 
+  async findByRefCode(refCode: string): Promise<User | null> {
+    const result = await this.dynamoRepository.send(
+      new ScanCommand({
+        TableName: this.tableName,
+        FilterExpression: 'ref_code = :ref AND (attribute_not_exists(deleted_at) OR deleted_at = :null_val)',
+        ExpressionAttributeValues: { 
+          ':ref': refCode,
+          ':null_val': null
+        },
+      })
+    );
+    return (result.Items?.[0] as User) ?? null;
+  }
+
   async update(id: string, user: Partial<User>): Promise<User> {
     const keys = Object.keys(user);
     if (keys.length === 0) {
