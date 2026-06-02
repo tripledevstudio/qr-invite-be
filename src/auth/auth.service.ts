@@ -258,14 +258,7 @@ export class AuthService {
   }
 
   private async sendVerificationEmail(email: string, verificationUrl: string) {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+const transporter = this.createTransport();
 
     await transporter.sendMail({
       from: '"TripleDevs Studio" <noreply@tripledevstudio.com>',
@@ -277,14 +270,7 @@ export class AuthService {
   }
 
   private async sendOtpEmail(email: string, otp: string) {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+const transporter = this.createTransport();
 
     await transporter.sendMail({
       from: '"TripleDevs Studio" <noreply@tripledevstudio.com>',
@@ -323,24 +309,62 @@ export class AuthService {
     });
   }
 
-  private generateTokens(user: User) {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      phone_number: user.phone_number,
-      role: user.role,
-    };
+private generateTokens(user: User) {
+  const payload = {
+    sub: user.id,
+    email: user.email,
+    phone_number: user.phone_number,
+    role: user.role,
+  };
 
-    return {
-      message: 'Success',
-      access_token: this.jwtService.sign(payload, {
-        secret: process.env.JWT_SECRET || 'secretKey',
-        expiresIn: '15m',
-      }),
-      refresh_token: this.jwtService.sign(payload, {
-        secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
-        expiresIn: '7d',
-      }),
-    };
+  return {
+    message: 'Success',
+    access_token: this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET || 'secretKey',
+      expiresIn: '15m',
+    }),
+    refresh_token: this.jwtService.sign(payload, {
+      secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
+      expiresIn: '7d',
+    }),
+  };
+}
+
+/**
+ * Create a Nodemailer transporter.
+ * Uses OAuth2 if Google OAuth environment variables are present,
+ * otherwise falls back to simple username/password login.
+ */
+private createTransport() {
+  // OAuth2 configuration (recommended for Gmail)
+  if (
+    process.env.SMTP_CLIENT_ID &&
+    process.env.SMTP_CLIENT_SECRET &&
+    process.env.SMTP_REFRESH_TOKEN
+  ) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: process.env.SMTP_USER,
+        clientId: process.env.SMTP_CLIENT_ID,
+        clientSecret: process.env.SMTP_CLIENT_SECRET,
+        refreshToken: process.env.SMTP_REFRESH_TOKEN,
+      },
+    });
   }
+  
+  console.log(process.env.SMTP_USER);
+  console.log(process.env.SMTP_PASS?.length);
+  // Plain login (works with App Passwords)
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '587', 10),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
 }
