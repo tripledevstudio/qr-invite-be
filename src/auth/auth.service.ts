@@ -353,9 +353,6 @@ private createTransport() {
       },
     });
   }
-  
-  console.log(process.env.SMTP_USER);
-  console.log(process.env.SMTP_PASS?.length);
   // Plain login (works with App Passwords)
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
