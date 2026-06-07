@@ -17,12 +17,16 @@ import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { USER_REPOSITORY_TOKEN } from '../user/domain/repositories/user.repository';
 import type { UserRepository } from '../user/domain/repositories/user.repository';
 import { User } from '../user/domain/entities/user.entity';
+import { STORE_REPOSITORY_TOKEN } from '../store/domain/repositories/store.repository';
+import type { StoreRepository } from '../store/domain/repositories/store.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
+    @Inject(STORE_REPOSITORY_TOKEN)
+    private readonly storeRepository: StoreRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -70,9 +74,28 @@ export class AuthService {
       phone_number,
       password: hashedPassword,
       ref_code: refCode,
+      is_verify: !!email ? false : true,
     });
 
     const createdUser = await this.userRepository.create(user);
+
+    if (rest.store_ids && rest.store_ids.length > 0) {
+      for (const store_id of rest.store_ids) {
+        try {
+          const store = await this.storeRepository.findOne(store_id);
+          const collaboratorIds = Array.isArray(store.collaborator_ids) ? store.collaborator_ids : [];
+          if (!collaboratorIds.includes(createdUser.id!)) {
+            collaboratorIds.push(createdUser.id!);
+            await this.storeRepository.update(store_id, {
+              collaborator_ids: collaboratorIds,
+              collaborator_count: collaboratorIds.length,
+            });
+          }
+        } catch (error) {
+          console.warn(`Store not found or error updating store ${store_id}:`, error);
+        }
+      }
+    }
 
     if (createdUser.email) {
       const verificationToken = this.jwtService.sign(
