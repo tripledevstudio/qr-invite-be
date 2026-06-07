@@ -21,12 +21,12 @@ export class DynamoStoreRepository implements StoreRepository {
   constructor(private readonly dynamoRepository: DynamoRepository) {}
 
   async create(dto: CreateStoreDto): Promise<Store> {
+    const now = new Date().toISOString();
     const item: Store = {
       id: randomUUID(),
-      name: dto.name,
-      address: dto.address,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      ...dto,
+      created_at: now,
+      updated_at: now,
     };
     await this.dynamoRepository.send(
       new PutCommand({ TableName: this.tableName, Item: item }),

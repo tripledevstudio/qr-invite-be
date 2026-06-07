@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsOptional, IsArray } from 'class-validator';
 import { UserRank, UserRole } from '../domain/entities/user.entity';
 
 export class CreateUserDto {
@@ -31,4 +31,9 @@ export class CreateUserDto {
   @ApiPropertyOptional()
   @IsOptional()
   avatar?: string;
+
+  @ApiPropertyOptional({ description: 'List of store IDs this user belongs to', type: [String] })
+  @IsOptional()
+  @IsArray()
+  store_ids?: string[];
 }
