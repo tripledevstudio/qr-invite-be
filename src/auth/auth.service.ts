@@ -17,12 +17,16 @@ import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { USER_REPOSITORY_TOKEN } from '../user/domain/repositories/user.repository';
 import type { UserRepository } from '../user/domain/repositories/user.repository';
 import { User } from '../user/domain/entities/user.entity';
+import { STORE_REPOSITORY_TOKEN } from '../store/domain/repositories/store.repository';
+import type { StoreRepository } from '../store/domain/repositories/store.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
+    @Inject(STORE_REPOSITORY_TOKEN)
+    private readonly storeRepository: StoreRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -70,9 +74,28 @@ export class AuthService {
       phone_number,
       password: hashedPassword,
       ref_code: refCode,
+      is_verify: !!email ? false : true,
     });
 
     const createdUser = await this.userRepository.create(user);
+
+    if (rest.store_ids && rest.store_ids.length > 0) {
+      for (const store_id of rest.store_ids) {
+        try {
+          const store = await this.storeRepository.findOne(store_id);
+          const collaboratorIds = Array.isArray(store.collaborator_ids) ? store.collaborator_ids : [];
+          if (!collaboratorIds.includes(createdUser.id!)) {
+            collaboratorIds.push(createdUser.id!);
+            await this.storeRepository.update(store_id, {
+              collaborator_ids: collaboratorIds,
+              collaborator_count: collaboratorIds.length,
+            });
+          }
+        } catch (error) {
+          console.warn(`Store not found or error updating store ${store_id}:`, error);
+        }
+      }
+    }
 
     if (createdUser.email) {
       const verificationToken = this.jwtService.sign(
@@ -321,7 +344,7 @@ private generateTokens(user: User) {
     message: 'Success',
     access_token: this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET || 'secretKey',
-      expiresIn: '15m',
+      expiresIn: '30m',
     }),
     refresh_token: this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
@@ -337,22 +360,22 @@ private generateTokens(user: User) {
  */
 private createTransport() {
   // OAuth2 configuration (recommended for Gmail)
-  if (
-    process.env.SMTP_CLIENT_ID &&
-    process.env.SMTP_CLIENT_SECRET &&
-    process.env.SMTP_REFRESH_TOKEN
-  ) {
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: process.env.SMTP_USER,
-        clientId: process.env.SMTP_CLIENT_ID,
-        clientSecret: process.env.SMTP_CLIENT_SECRET,
-        refreshToken: process.env.SMTP_REFRESH_TOKEN,
-      },
-    });
-  }
+  // if (
+  //   process.env.SMTP_CLIENT_ID &&
+  //   process.env.SMTP_CLIENT_SECRET &&
+  //   process.env.SMTP_REFRESH_TOKEN
+  // ) {
+  //   return nodemailer.createTransport({
+  //     service: 'gmail',
+  //     auth: {
+  //       type: 'OAuth2',
+  //       user: process.env.SMTP_USER,
+  //       clientId: process.env.SMTP_CLIENT_ID,
+  //       clientSecret: process.env.SMTP_CLIENT_SECRET,
+  //       refreshToken: process.env.SMTP_REFRESH_TOKEN,
+  //     },
+  //   });
+  // }
   // Plain login (works with App Passwords)
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',

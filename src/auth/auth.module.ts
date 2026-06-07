@@ -5,6 +5,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserModule } from '../user/user.module';
+import { StoreModule } from '../store/store.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UserModule } from '../user/user.module';
       signOptions: { expiresIn: '15m' },
     }),
     UserModule,
+    StoreModule,
   ],
   providers: [AuthService, JwtStrategy, JwtAuthGuard],
   controllers: [AuthController],

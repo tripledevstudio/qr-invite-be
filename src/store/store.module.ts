@@ -20,6 +20,6 @@ import { DeleteStoreUseCase } from './application/use-cases/delete-store.usecase
     UpdateStoreUseCase,
     DeleteStoreUseCase,
   ],
-  exports: [],
+  exports: [STORE_REPOSITORY_TOKEN],
 })
 export class StoreModule {}

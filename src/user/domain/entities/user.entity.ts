@@ -31,6 +31,7 @@ export class User {
   avatar?: string;
   forgot_password_otp?: string;
   forgot_password_otp_expires_at?: string;
+  store_ids?: string[];
 
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
@@ -41,5 +42,6 @@ export class User {
     if (this.bonus_current === undefined) this.bonus_current = 0;
     if (this.bonus_pending === undefined) this.bonus_pending = 0;
     if (this.bonus_received === undefined) this.bonus_received = 0;
+    if (!this.store_ids) this.store_ids = [];
   }
 }

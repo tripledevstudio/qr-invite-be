@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsOptional, IsArray } from 'class-validator';
 import { UserRank, UserRole } from '../../user/domain/entities/user.entity';
 
 export class RegisterDto {
@@ -30,4 +30,9 @@ export class RegisterDto {
   @IsOptional()
   @IsEnum(UserRole)
   role?: UserRole;
+
+  @ApiPropertyOptional({ description: 'List of store IDs this user is registering for', type: [String] })
+  @IsOptional()
+  @IsArray()
+  store_ids?: string[];
 }
