@@ -13,3 +13,4 @@ Use this file as the context when you type `/bug` in the chat.
 - Keep the fix isolated to the smallest possible component.
 - Do not introduce new business logic in a bug‑fix commit.
 - Update only the files that directly affect the failing scenario.
+- **Table Auto-Provisioning**: If resolving a DynamoDB `ResourceNotFoundException`, verify that the entity's DynamoDB table exists or is registered for auto-creation in `DynamoDBService#ensureTablesExist`.

@@ -8,6 +8,7 @@ import { VerifyEmailUseCase } from './application/use-cases/verify-email.usecase
 import { ForgotPasswordUseCase } from './application/use-cases/forgot-password.usecase';
 import { VerifyForgotPasswordOtpUseCase } from './application/use-cases/verify-forgot-password-otp.usecase';
 import { ResetPasswordUseCase } from './application/use-cases/reset-password.usecase';
+import { ChangeStoreUseCase } from './application/use-cases/change-store.usecase';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
@@ -32,6 +33,7 @@ import { StoreModule } from '../store/store.module';
   ForgotPasswordUseCase,
   VerifyForgotPasswordOtpUseCase,
   ResetPasswordUseCase,
+  ChangeStoreUseCase,
   JwtStrategy,
   JwtAuthGuard,
 ],

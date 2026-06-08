@@ -1,13 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class Admin {
   @ApiProperty()
   id?: string;
 
   @ApiProperty()
+  user_name: string;
+
+  @ApiPropertyOptional()
   email?: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   phone_number?: string;
 
   @ApiProperty()
