@@ -37,6 +37,14 @@ export class RegisterUseCase {
         throw new BadRequestException('Phone number already exists');
     }
 
+    // Check for duplicate user_name if provided
+    if ((registerDto as any).user_name) {
+      const existingUser = await this.userRepository.findByUserName((registerDto as any).user_name);
+      if (existingUser) {
+        throw new BadRequestException('User name already exists');
+      }
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Generate unique default invite_code: REF- and 8 random digits
