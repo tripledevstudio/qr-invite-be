@@ -6,14 +6,24 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
-import { USER_TABLE_NAME, CHECK_IN_TABLE_NAME, STORE_TABLE_NAME, PAYMENT_INFO_TABLE_NAME, ADMIN_TABLE_NAME, SERVICE_TABLE_NAME } from './constants';
+import {
+  USER_TABLE_NAME,
+  CHECK_IN_TABLE_NAME,
+  STORE_TABLE_NAME,
+  PAYMENT_INFO_TABLE_NAME,
+  ADMIN_TABLE_NAME,
+  SERVICE_TABLE_NAME,
+  REQUEST_TABLE_NAME,
+  POINT_HISTORY_TABLE_NAME,
+  STORE_USER_TABLE_NAME,
+} from './constants';
 
 @Injectable()
 export class DynamoDBService implements OnModuleInit {
   private client: DynamoDBClient;
   private docClient: DynamoDBDocumentClient;
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) { }
 
   async onModuleInit() {
     const region = this.configService.get<string>('database.awsRegion');
@@ -38,8 +48,18 @@ export class DynamoDBService implements OnModuleInit {
   }
 
   private async ensureTablesExist() {
-    const tables = [USER_TABLE_NAME, CHECK_IN_TABLE_NAME, STORE_TABLE_NAME, PAYMENT_INFO_TABLE_NAME, ADMIN_TABLE_NAME, SERVICE_TABLE_NAME];
-    
+    const tables = [
+      USER_TABLE_NAME,
+      CHECK_IN_TABLE_NAME,
+      STORE_TABLE_NAME,
+      PAYMENT_INFO_TABLE_NAME,
+      ADMIN_TABLE_NAME,
+      SERVICE_TABLE_NAME,
+      REQUEST_TABLE_NAME,
+      POINT_HISTORY_TABLE_NAME,
+      STORE_USER_TABLE_NAME,
+    ];
+
     for (const tableName of tables) {
       try {
         await this.client.send(
@@ -50,15 +70,32 @@ export class DynamoDBService implements OnModuleInit {
           err.name === 'ResourceNotFoundException' ||
           err.$metadata?.httpStatusCode === 404
         ) {
-          // Default schema with 'id' as Partition Key for auto-provisioning
-          await this.client.send(
-            new CreateTableCommand({
-              TableName: tableName,
-              AttributeDefinitions: [{ AttributeName: 'id', AttributeType: 'S' }],
-              KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
-              BillingMode: 'PAY_PER_REQUEST',
-            }),
-          );
+          if (tableName === 'StoreUsers') {
+            await this.client.send(
+              new CreateTableCommand({
+                TableName: tableName,
+                AttributeDefinitions: [
+                  { AttributeName: 'store_id', AttributeType: 'S' },
+                  { AttributeName: 'user_id', AttributeType: 'S' }
+                ],
+                KeySchema: [
+                  { AttributeName: 'store_id', KeyType: 'HASH' },
+                  { AttributeName: 'user_id', KeyType: 'RANGE' }
+                ],
+                BillingMode: 'PAY_PER_REQUEST',
+              }),
+            );
+          } else {
+            // Default schema with 'id' as Partition Key for auto-provisioning
+            await this.client.send(
+              new CreateTableCommand({
+                TableName: tableName,
+                AttributeDefinitions: [{ AttributeName: 'id', AttributeType: 'S' }],
+                KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
+                BillingMode: 'PAY_PER_REQUEST',
+              }),
+            );
+          }
         } else {
           throw err;
         }

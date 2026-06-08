@@ -4,3 +4,6 @@ export const STORE_TABLE_NAME = 'Stores';
 export const PAYMENT_INFO_TABLE_NAME = 'PaymentInfos';
 export const ADMIN_TABLE_NAME = 'Admins';
 export const SERVICE_TABLE_NAME = 'Services';
+export const REQUEST_TABLE_NAME = 'Requests';
+export const POINT_HISTORY_TABLE_NAME = 'PointHistories';
+export const STORE_USER_TABLE_NAME = 'StoreUsers';

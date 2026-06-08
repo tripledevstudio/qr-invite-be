@@ -14,6 +14,7 @@ import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 import { UserModule } from '../user/user.module';
 import { StoreModule } from '../store/store.module';
+import { RequestModule } from '../request/request.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { StoreModule } from '../store/store.module';
     }),
     UserModule,
     StoreModule,
+    RequestModule,
   ],
   providers: [
   RegisterUseCase,

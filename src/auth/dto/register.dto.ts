@@ -7,6 +7,9 @@ export class RegisterDto {
   name: string;
 
   @ApiPropertyOptional()
+  user_name?: string;
+
+  @ApiPropertyOptional()
   email?: string;
 
   @ApiPropertyOptional()

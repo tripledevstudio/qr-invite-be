@@ -55,6 +55,18 @@ export class DynamoUserRepository implements UserRepository {
     return (result.Items?.[0] as User) ?? null;
   }
 
+  // New method to find a user by their user_name
+  async findByUserName(userName: string): Promise<User | null> {
+    const result = await this.dynamoRepository.send(
+      new ScanCommand({
+        TableName: this.tableName,
+        FilterExpression: 'user_name = :userName',
+        ExpressionAttributeValues: { ':userName': userName },
+      })
+    );
+    return (result.Items?.[0] as User) ?? null;
+  }
+
   async findByInviteCode(inviteCode: string): Promise<User | null> {
     const result = await this.dynamoRepository.send(
       new ScanCommand({

@@ -1,0 +1,11 @@
+{
+    "editor.rulers": [
+        100
+    ],
+    "editor.wordWrap": "off",
+    "editor.formatOnSave": true,
+    "prettier.printWidth": 100,
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
+}

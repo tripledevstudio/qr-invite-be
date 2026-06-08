@@ -13,6 +13,7 @@ export enum UserRole {
 export class User {
   id: string;
   name: string;
+  user_name?: string;
   email: string;
   phone_number?: string;
   password?: string;

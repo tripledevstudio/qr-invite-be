@@ -15,13 +15,18 @@ export class LoginUseCase {
   ) {}
 
   async execute(loginDto: LoginDto) {
-    const { phone_number, password } = loginDto;
+    const { phone_number, user_name, password } = loginDto as any;
 
-    if (!phone_number) {
-      throw new BadRequestException('Phone number is required');
+    if (!phone_number && !user_name) {
+      throw new BadRequestException('Phone number or user name is required');
     }
 
-    const user: User | null = await this.userRepository.findByPhone(phone_number);
+    let user: User | null = null;
+    if (phone_number) {
+      user = await this.userRepository.findByPhone(phone_number);
+    } else if (user_name) {
+      user = await this.userRepository.findByUserName(user_name);
+    }
 
     if (!user || !user.password) {
       throw new UnauthorizedException('Invalid credentials');

@@ -34,7 +34,7 @@ export class AuthController {
     private readonly verifyForgotPasswordOtpUseCase: VerifyForgotPasswordOtpUseCase,
     private readonly resetPasswordUseCase: ResetPasswordUseCase,
     private readonly changeStoreUseCase: ChangeStoreUseCase,
-  ) {}
+  ) { }
 
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
@@ -86,6 +86,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   changeStore(@Req() req: any, @Body() changeStoreDto: ChangeStoreDto) {
-    return this.changeStoreUseCase.execute(req.user.userId, changeStoreDto.store_id);
+    return this.changeStoreUseCase.execute(req.user.user_id, changeStoreDto.store_id);
   }
 }
