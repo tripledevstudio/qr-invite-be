@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, Req, UseGuards, BadRequestException } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt-auth.guard';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateStoreUseCase } from './application/use-cases/create-store.usecase';
 import { ListStoresUseCase } from './application/use-cases/list-stores.usecase';
@@ -7,6 +8,7 @@ import { UpdateStoreUseCase } from './application/use-cases/update-store.usecase
 import { DeleteStoreUseCase } from './application/use-cases/delete-store.usecase';
 import { ListStoreUsersUseCase } from './application/use-cases/list-store-users.usecase';
 import { CreateStoreDto } from './dto/create-store.dto';
+import { ListStoreUsersDto } from './dto/list-store-users.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { PaginationDto } from '../common/pagination/pagination.dto';
 import { PaginationService } from '../common/pagination/pagination.service';
@@ -40,6 +42,17 @@ export class StoreController {
     return this.paginationService.paginate(list, page, pageSize);
   }
 
+  @Get('users')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get list of users in store based on token' })
+  async findUsers(@Req() req: any, @Query() query: ListStoreUsersDto) {
+    const storeId = req.user?.store_id;
+    if (!storeId) {
+      throw new BadRequestException('Store ID is missing in token');
+    }
+    return this.listStoreUsersUseCase.execute(storeId, query);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get store by ID' })
   async findOne(@Param('id') id: string) {
@@ -56,11 +69,5 @@ export class StoreController {
   @ApiOperation({ summary: 'Delete store by ID' })
   async remove(@Param('id') id: string) {
     return this.deleteStoreUseCase.execute(id);
-  }
-
-  @Get(':id/users')
-  @ApiOperation({ summary: 'Get list of users in store' })
-  async findUsers(@Param('id') id: string) {
-    return this.listStoreUsersUseCase.execute(id);
   }
 }

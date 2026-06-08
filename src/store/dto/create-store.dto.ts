@@ -43,8 +43,4 @@ export class CreateStoreDto {
   @IsOptional()
   readonly monthly_revenue?: number;
 
-  @ApiPropertyOptional({ description: 'List of collaborator (user) IDs participating in the store', type: [String] })
-  @IsArray()
-  @IsOptional()
-  readonly collaborator_ids?: string[];
 }

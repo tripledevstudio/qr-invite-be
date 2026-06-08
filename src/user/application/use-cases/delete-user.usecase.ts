@@ -3,6 +3,8 @@ import type { UserRepository } from '../../domain/repositories/user.repository';
 import { USER_REPOSITORY_TOKEN } from '../../domain/repositories/user.repository';
 import { STORE_REPOSITORY_TOKEN } from '../../../store/domain/repositories/store.repository';
 import type { StoreRepository } from '../../../store/domain/repositories/store.repository';
+import { STORE_USER_REPOSITORY_TOKEN } from '../../../store/domain/repositories/store-user.repository';
+import type { StoreUserRepository } from '../../../store/domain/repositories/store-user.repository';
 
 @Injectable()
 export class DeleteUserUseCase {
@@ -11,27 +13,20 @@ export class DeleteUserUseCase {
     private readonly userRepository: UserRepository,
     @Inject(STORE_REPOSITORY_TOKEN)
     private readonly storeRepository: StoreRepository,
-  ) {}
+    @Inject(STORE_USER_REPOSITORY_TOKEN)
+    private readonly storeUserRepository: StoreUserRepository,
+  ) { }
 
   async execute(id: string): Promise<void> {
     const user = await this.userRepository.findById(id);
-    
-    if (user && user.store_ids && user.store_ids.length > 0) {
-      for (const store_id of user.store_ids) {
-        try {
-          const store = await this.storeRepository.findOne(store_id);
-          const collaboratorIds = Array.isArray(store.collaborator_ids) ? store.collaborator_ids : [];
-          if (collaboratorIds.includes(id)) {
-            const index = collaboratorIds.indexOf(id);
-            collaboratorIds.splice(index, 1);
-            await this.storeRepository.update(store_id, {
-              collaborator_ids: collaboratorIds,
-              collaborator_count: collaboratorIds.length,
-            });
-          }
-        } catch (error) {
-          console.warn(`Store not found or error removing collaborator from store ${store_id}:`, error);
-        }
+
+    if (user?.store_ids && user.store_ids.length > 0) {
+      for (const storeId of user.store_ids) {
+        await this.storeUserRepository.delete(storeId, id);
+        const remaining = await this.storeUserRepository.findByStoreId(storeId);
+        await this.storeRepository.update(storeId, {
+          collaborator_count: remaining.length,
+        });
       }
     }
 

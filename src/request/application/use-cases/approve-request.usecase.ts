@@ -11,6 +11,8 @@ import { ApproveRequestDto } from '../../dto/approve-request.dto';
 import { STORE_USER_REPOSITORY_TOKEN } from '../../../store/domain/repositories/store-user.repository';
 import type { StoreUserRepository } from '../../../store/domain/repositories/store-user.repository';
 import { StoreUser } from '../../../store/domain/entities/store-user.entity';
+import { STORE_REPOSITORY_TOKEN } from '../../../store/domain/repositories/store.repository';
+import type { StoreRepository } from '../../../store/domain/repositories/store.repository';
 
 @Injectable()
 export class ApproveRequestUseCase {
@@ -23,6 +25,8 @@ export class ApproveRequestUseCase {
     private readonly pointHistoryRepository: PointHistoryRepository,
     @Inject(STORE_USER_REPOSITORY_TOKEN)
     private readonly storeUserRepository: StoreUserRepository,
+    @Inject(STORE_REPOSITORY_TOKEN)
+    private readonly storeRepository: StoreRepository,
   ) { }
 
   async execute(dto: ApproveRequestDto) {
@@ -42,8 +46,9 @@ export class ApproveRequestUseCase {
       await this.userRepository.update(request.user_id, { is_verify: true });
 
       const user = await this.userRepository.findById(request.user_id);
-      if (user && user.store_ids && user.store_ids.length > 0) {
-        for (const storeId of user.store_ids) {
+      if (user) {
+        const storeIdsToCreate = request.store_id ? [request.store_id] : (user.store_ids ?? []);
+        for (const storeId of storeIdsToCreate) {
           await this.storeUserRepository.create(
             new StoreUser({
               store_id: storeId,
@@ -52,8 +57,17 @@ export class ApproveRequestUseCase {
               avatar: user.avatar,
               is_verify: true,
               role: user.role,
+              gender: user.gender,
+              birth_date: user.birth_date,
+              occupation: user.occupation,
             })
           );
+
+          // Update collaborator_count for the store
+          const storeUsers = await this.storeUserRepository.findByStoreId(storeId);
+          await this.storeRepository.update(storeId, {
+            collaborator_count: storeUsers.length,
+          });
         }
       }
     }

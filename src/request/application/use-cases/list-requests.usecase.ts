@@ -8,12 +8,13 @@ export class ListRequestsUseCase {
   constructor(
     @Inject(REQUEST_REPOSITORY_TOKEN)
     private readonly requestRepository: RequestRepository,
-  ) {}
+  ) { }
 
   async execute(filters: ListRequestsDto) {
     return this.requestRepository.findAll({
       type: filters.type,
       status: filters.status,
+      store_id: filters.store_id,
       sort_by: filters.sort_by,
       sort_order: filters.sort_order,
     });

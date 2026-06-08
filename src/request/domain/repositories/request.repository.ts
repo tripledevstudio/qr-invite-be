@@ -10,6 +10,7 @@ export interface RequestRepository {
   findAll(filters?: {
     type?: string;
     status?: string;
+    store_id?: string;
     sort_by?: string;
     sort_order?: 'ASC' | 'DESC';
   }): Promise<Request[]>;

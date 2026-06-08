@@ -26,6 +26,10 @@ export class RegisterUseCase {
 
   async execute(registerDto: RegisterDto) {
     const { email, phone_number, password, ...rest } = registerDto;
+    const storeId = (registerDto as any).store_id ||
+      ((registerDto as any).store_ids && (registerDto as any).store_ids.length > 0
+        ? (registerDto as any).store_ids[0]
+        : undefined);
 
     if (!email && !phone_number) {
       throw new BadRequestException('Email or phone number is required');
@@ -70,6 +74,10 @@ export class RegisterUseCase {
       throw new BadRequestException('Could not generate a unique invite code. Please try again.');
     }
 
+    const userStoreIds = (registerDto as any).store_ids
+      ? (registerDto as any).store_ids
+      : (storeId ? [storeId] : undefined);
+
     const user = new User({
       ...rest,
       email,
@@ -77,6 +85,7 @@ export class RegisterUseCase {
       password: hashedPassword,
       invite_code: inviteCode,
       is_verify: false,
+      ...(userStoreIds ? { store_ids: userStoreIds } : {}),
     });
 
     const createdUser = await this.userRepository.create(user);
@@ -84,12 +93,9 @@ export class RegisterUseCase {
       new Request({
         user_id: createdUser.id!,
         type: RequestType.REGISTER,
+        ...(storeId ? { store_id: storeId } : {}),
       })
     );
-
-
-
-
 
     return { message: 'User registered successfully. Please wait for admin approval.' };
   }

@@ -1,0 +1,28 @@
+# .clinerules
+#
+# Project-wide linting and performance rules.
+# These rules are inspired by the steering guidelines in `steering/feat.md` and
+# aim to improve execution speed, maintainability, and code consistency.
+#
+# Usage:
+#   The custom CLI tool `cliner` (or any compatible linter) can read this file
+#   to enforce the following checks.
+#
+# Rules:
+#   async_await: true                # Enforce use of async/await for async operations
+#   no_console: true                # Disallow console.log/debug in production code
+#   max_loop_complexity: 1          # Encourage O(N) loops; avoid nested loops where possible
+#   prefer_array_methods: true      # Prefer map/filter/reduce over manual for loops
+#   snake_case_db_fields: true      # Ensure DB field names use snake_case (e.g., user_id)
+#   dto_validation: true            # Require DTO validation for all incoming requests
+#   naming:
+#     classes: PascalCase
+#     functions: camelCase
+#     variables: camelCase
+#     constants: UPPER_SNAKE_CASE
+#   typescript_strict: true         # Enable strict mode checks
+#   import_sort: true               # Sort imports alphabetically
+#   no_unused_imports: true         # Remove unused imports
+#
+# These rules help keep the codebase fast, clean, and aligned with the domain‑driven
+# design principles outlined in the steering documents.

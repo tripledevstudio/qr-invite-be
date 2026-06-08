@@ -9,6 +9,11 @@ export enum UserRole {
   COLLABORATOR = 'COLLABORATOR',
   OWNER = 'OWNER',
 }
+export enum UserGender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
+}
 
 export class User {
   id: string;
@@ -34,6 +39,9 @@ export class User {
   forgot_password_otp_expires_at?: string;
   store_ids?: string[];
   current_store_id?: string;
+  gender?: UserGender;
+  birth_date?: string;
+  occupation?: string;
 
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
