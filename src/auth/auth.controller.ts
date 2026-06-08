@@ -1,62 +1,79 @@
 import { Controller, Post, Body, HttpCode, HttpStatus, Get, Param } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 
+import { RegisterUseCase } from './application/use-cases/register.usecase';
+import { LoginUseCase } from './application/use-cases/login.usecase';
+import { LogoutUseCase } from './application/use-cases/logout.usecase';
+import { RefreshTokenUseCase } from './application/use-cases/refresh-token.usecase';
+import { VerifyEmailUseCase } from './application/use-cases/verify-email.usecase';
+import { ForgotPasswordUseCase } from './application/use-cases/forgot-password.usecase';
+import { VerifyForgotPasswordOtpUseCase } from './application/use-cases/verify-forgot-password-otp.usecase';
+import { ResetPasswordUseCase } from './application/use-cases/reset-password.usecase';
+
 @ApiTags('Auth')
 @ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly registerUseCase: RegisterUseCase,
+    private readonly loginUseCase: LoginUseCase,
+    private readonly logoutUseCase: LogoutUseCase,
+    private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly verifyEmailUseCase: VerifyEmailUseCase,
+    private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
+    private readonly verifyForgotPasswordOtpUseCase: VerifyForgotPasswordOtpUseCase,
+    private readonly resetPasswordUseCase: ResetPasswordUseCase,
+  ) {}
 
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+    return this.registerUseCase.execute(registerDto);
   }
 
   @Get('verify/:token')
   async verify(@Param('token') token: string) {
-    return this.authService.verifyEmail(token);
+    return this.verifyEmailUseCase.execute(token);
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+    return this.loginUseCase.execute(loginDto);
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout() {
-    return this.authService.logout();
+    return this.logoutUseCase.execute();
   }
 
   @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
-    return this.authService.refreshToken(refreshTokenDto);
+    return this.refreshTokenUseCase.execute(refreshTokenDto);
   }
 
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
-    return this.authService.forgotPassword(forgotPasswordDto);
+    return this.forgotPasswordUseCase.execute(forgotPasswordDto);
   }
 
   @Post('verify-forgot-password-otp')
   @HttpCode(HttpStatus.OK)
   verifyForgotPasswordOtp(@Body() verifyOtpDto: VerifyOtpDto) {
-    return this.authService.verifyForgotPasswordOtp(verifyOtpDto);
+    return this.verifyForgotPasswordOtpUseCase.execute(verifyOtpDto);
   }
 
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
   resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
-    return this.authService.resetPassword(resetPasswordDto);
+    return this.resetPasswordUseCase.execute(resetPasswordDto);
   }
 }

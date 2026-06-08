@@ -4,13 +4,13 @@ import type { UserRepository } from '../../domain/repositories/user.repository';
 import { USER_REPOSITORY_TOKEN } from '../../domain/repositories/user.repository';
 
 @Injectable()
-export class GetUserByRefCodeUseCase {
+export class GetUserByInviteCodeUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(refCode: string): Promise<User | null> {
-    return this.userRepository.findByRefCode(refCode);
+  async execute(inviteCode: string): Promise<User | null> {
+    return this.userRepository.findByInviteCode(inviteCode);
   }
 }

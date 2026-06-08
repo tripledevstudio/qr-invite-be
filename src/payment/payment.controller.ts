@@ -2,7 +2,7 @@ import { Controller, Get, Patch, Param, Body, UseGuards } from '@nestjs/common';
 import { GetPaymentInfoUseCase } from './application/use-cases/get-payment-info.usecase';
 import { UpdatePaymentInfoUseCase } from './application/use-cases/update-payment-info.usecase';
 import { UpdatePaymentInfoDto } from './dto/update-payment-info.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Payment')

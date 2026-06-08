@@ -10,7 +10,7 @@ import { CreateUserUseCase } from './application/use-cases/create-user.usecase';
 import { GetUserUseCase } from './application/use-cases/get-user.usecase';
 import { UpdateUserUseCase } from './application/use-cases/update-user.usecase';
 import { DeleteUserUseCase } from './application/use-cases/delete-user.usecase';
-import { GetUserByRefCodeUseCase } from './application/use-cases/get-user-by-ref-code.usecase';
+import { GetUserByInviteCodeUseCase } from './application/use-cases/get-user-by-invite-code.usecase';
 
 @Module({
   imports: [DynamoModule, PaymentModule, StoreModule],
@@ -20,7 +20,7 @@ import { GetUserByRefCodeUseCase } from './application/use-cases/get-user-by-ref
     GetUserUseCase,
     UpdateUserUseCase,
     DeleteUserUseCase,
-    GetUserByRefCodeUseCase,
+    GetUserByInviteCodeUseCase,
   ],
   controllers: [UserController],
   exports: [USER_REPOSITORY_TOKEN],
