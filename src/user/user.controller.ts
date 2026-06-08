@@ -14,10 +14,10 @@ import { GetUserUseCase } from './application/use-cases/get-user.usecase';
 import { UpdateUserUseCase } from './application/use-cases/update-user.usecase';
 import { DeleteUserUseCase } from './application/use-cases/delete-user.usecase';
 import { GetPaymentInfoUseCase } from '../payment/application/use-cases/get-payment-info.usecase';
-import { GetUserByRefCodeUseCase } from './application/use-cases/get-user-by-ref-code.usecase';
+import { GetUserByInviteCodeUseCase } from './application/use-cases/get-user-by-invite-code.usecase';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
@@ -31,7 +31,7 @@ export class UserController {
   private readonly updateUserUseCase: UpdateUserUseCase,
   private readonly deleteUserUseCase: DeleteUserUseCase,
   private readonly getPaymentInfoUseCase: GetPaymentInfoUseCase,
-  private readonly getUserByRefCodeUseCase: GetUserByRefCodeUseCase,
+  private readonly getUserByInviteCodeUseCase: GetUserByInviteCodeUseCase,
   ) {}
 
   @Post()
@@ -60,12 +60,12 @@ export class UserController {
     return this.getUserUseCase.execute(id);
   }
 
-  @Get('ref/:refCode')
-  async getByRefCode(@Param('refCode') refCode: string) {
-    const user = await this.getUserByRefCodeUseCase.execute(refCode);
+  @Get('inviteCode/:inviteCode')
+  async getByInviteCode(@Param('inviteCode') inviteCode: string) {
+    const user = await this.getUserByInviteCodeUseCase.execute(inviteCode);
     if (!user) return null;
-    const { avatar, name, ref_code, rank } = user;
-    return { avatar, name, ref_code, rank };
+    const { avatar, name, invite_code, rank } = user;
+    return { avatar, name, invite_code, rank };
   }
 
   @Put(':id')

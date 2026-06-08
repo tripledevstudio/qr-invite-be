@@ -11,6 +11,7 @@ import { CheckInModule } from './checkin/checkin.module';
 import { PaginationModule } from './common/pagination/pagination.module';
 import { StoreModule } from './store/store.module';
 import { PaymentModule } from './payment/payment.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PaymentModule } from './payment/payment.module';
     PaginationModule,
     StoreModule,
     PaymentModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

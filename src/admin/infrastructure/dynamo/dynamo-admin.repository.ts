@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DynamoRepository } from '../../../dynamo/dynamo.repository';
-import { User } from '../../domain/entities/user.entity';
-import { UserRepository } from '../../domain/repositories/user.repository';
+import { Admin } from '../../domain/entities/admin.entity';
+import { AdminRepository } from '../../domain/repositories/admin.repository';
 import {
   PutCommand,
   GetCommand,
@@ -10,30 +10,30 @@ import {
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { randomUUID } from 'crypto';
-import { USER_TABLE_NAME } from '../../../dynamo/constants';
+import { ADMIN_TABLE_NAME } from '../../../dynamo/constants';
 
 @Injectable()
-export class DynamoUserRepository implements UserRepository {
-  private readonly tableName = USER_TABLE_NAME;
+export class DynamoAdminRepository implements AdminRepository {
+  private readonly tableName = ADMIN_TABLE_NAME;
 
   constructor(private readonly dynamoRepository: DynamoRepository) {}
 
-  async create(user: User): Promise<User> {
-    const item = { ...user, id: user.id ?? randomUUID() };
+  async create(admin: Admin): Promise<Admin> {
+    const item = { ...admin, id: admin.id ?? randomUUID() };
     await this.dynamoRepository.send(
       new PutCommand({ TableName: this.tableName, Item: item })
     );
     return item;
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<Admin | null> {
     const result = await this.dynamoRepository.send(
       new GetCommand({ TableName: this.tableName, Key: { id } })
     );
-    return (result.Item as User) ?? null;
+    return (result.Item as Admin) ?? null;
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<Admin | null> {
     const result = await this.dynamoRepository.send(
       new ScanCommand({
         TableName: this.tableName,
@@ -41,10 +41,10 @@ export class DynamoUserRepository implements UserRepository {
         ExpressionAttributeValues: { ':email': email },
       })
     );
-    return (result.Items?.[0] as User) ?? null;
+    return (result.Items?.[0] as Admin) ?? null;
   }
 
-  async findByPhone(phone: string): Promise<User | null> {
+  async findByPhone(phone: string): Promise<Admin | null> {
     const result = await this.dynamoRepository.send(
       new ScanCommand({
         TableName: this.tableName,
@@ -52,27 +52,24 @@ export class DynamoUserRepository implements UserRepository {
         ExpressionAttributeValues: { ':phone': phone },
       })
     );
-    return (result.Items?.[0] as User) ?? null;
+    return (result.Items?.[0] as Admin) ?? null;
   }
 
-  async findByInviteCode(inviteCode: string): Promise<User | null> {
+  async findByStoreId(storeId: string): Promise<Admin | null> {
     const result = await this.dynamoRepository.send(
       new ScanCommand({
         TableName: this.tableName,
-        FilterExpression: 'invite_code = :invite AND (attribute_not_exists(deleted_at) OR deleted_at = :null_val)',
-        ExpressionAttributeValues: { 
-          ':invite': inviteCode,
-          ':null_val': null
-        },
+        FilterExpression: 'store_id = :storeId',
+        ExpressionAttributeValues: { ':storeId': storeId },
       })
     );
-    return (result.Items?.[0] as User) ?? null;
+    return (result.Items?.[0] as Admin) ?? null;
   }
 
-  async update(id: string, user: Partial<User>): Promise<User> {
-    const keys = Object.keys(user);
+  async update(id: string, admin: Partial<Admin>): Promise<Admin> {
+    const keys = Object.keys(admin);
     if (keys.length === 0) {
-      return (await this.findById(id)) as User;
+      return (await this.findById(id)) as Admin;
     }
 
     const updateExpressions = keys
@@ -83,7 +80,7 @@ export class DynamoUserRepository implements UserRepository {
 
     keys.forEach((key, i) => {
       expressionAttributeNames[`#k${i}`] = key;
-      expressionAttributeValues[`:v${i}`] = (user as any)[key];
+      expressionAttributeValues[`:v${i}`] = (admin as any)[key];
     });
 
     await this.dynamoRepository.send(
@@ -97,7 +94,7 @@ export class DynamoUserRepository implements UserRepository {
       })
     );
 
-    return (await this.findById(id)) as User;
+    return (await this.findById(id)) as Admin;
   }
 
   async delete(id: string): Promise<void> {

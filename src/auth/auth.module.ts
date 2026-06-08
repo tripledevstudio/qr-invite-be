@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
+import { RegisterUseCase } from './application/use-cases/register.usecase';
+import { LoginUseCase } from './application/use-cases/login.usecase';
+import { LogoutUseCase } from './application/use-cases/logout.usecase';
+import { RefreshTokenUseCase } from './application/use-cases/refresh-token.usecase';
+import { VerifyEmailUseCase } from './application/use-cases/verify-email.usecase';
+import { ForgotPasswordUseCase } from './application/use-cases/forgot-password.usecase';
+import { VerifyForgotPasswordOtpUseCase } from './application/use-cases/verify-forgot-password-otp.usecase';
+import { ResetPasswordUseCase } from './application/use-cases/reset-password.usecase';
 import { AuthController } from './auth.controller';
-import { JwtStrategy } from './jwt.strategy';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
+import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 import { UserModule } from '../user/user.module';
 import { StoreModule } from '../store/store.module';
 
@@ -11,13 +18,24 @@ import { StoreModule } from '../store/store.module';
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secretKey',
-      signOptions: { expiresIn: '15m' },
+      signOptions: { expiresIn: '1h' },
     }),
     UserModule,
     StoreModule,
   ],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  providers: [
+  RegisterUseCase,
+  LoginUseCase,
+  LogoutUseCase,
+  RefreshTokenUseCase,
+  VerifyEmailUseCase,
+  ForgotPasswordUseCase,
+  VerifyForgotPasswordOtpUseCase,
+  ResetPasswordUseCase,
+  JwtStrategy,
+  JwtAuthGuard,
+],
   controllers: [AuthController],
-  exports: [AuthService, JwtAuthGuard],
+  exports: [JwtAuthGuard],
 })
 export class AuthModule {}
