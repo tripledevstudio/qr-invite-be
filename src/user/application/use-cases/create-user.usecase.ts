@@ -13,7 +13,7 @@ export class CreateUserUseCase {
     private readonly userRepository: UserRepository,
     @Inject(STORE_REPOSITORY_TOKEN)
     private readonly storeRepository: StoreRepository,
-  ) {}
+  ) { }
 
   async execute(dto: CreateUserDto): Promise<User> {
     const user = new User({
@@ -26,26 +26,10 @@ export class CreateUserUseCase {
       role: dto.role,
       store_ids: dto.store_ids || [],
     });
-    
+
     const createdUser = await this.userRepository.create(user);
 
-    if (createdUser.store_ids && createdUser.store_ids.length > 0) {
-      for (const store_id of createdUser.store_ids) {
-        try {
-          const store = await this.storeRepository.findOne(store_id);
-          const collaboratorIds = Array.isArray(store.collaborator_ids) ? store.collaborator_ids : [];
-          if (!collaboratorIds.includes(createdUser.id!)) {
-            collaboratorIds.push(createdUser.id!);
-            await this.storeRepository.update(store_id, {
-              collaborator_ids: collaboratorIds,
-              collaborator_count: collaboratorIds.length,
-            });
-          }
-        } catch (error) {
-          console.warn(`Store not found or error updating store ${store_id}:`, error);
-        }
-      }
-    }
+    // Store collaboration now managed via store_user table; no direct update to Store entity needed here.
 
     return createdUser;
   }

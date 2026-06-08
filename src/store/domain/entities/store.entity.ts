@@ -8,7 +8,6 @@ export class Store {
   extra_bonus?: number; // thưởng thêm cho đơn > 500k
   monthly_revenue?: number;
   collaborator_count?: number;
-  collaborator_ids?: string[];
   created_at: string;
   updated_at: string;
 
@@ -20,6 +19,5 @@ export class Store {
     if (this.extra_bonus === undefined) this.extra_bonus = 0;
     if (this.monthly_revenue === undefined) this.monthly_revenue = 0;
     if (this.collaborator_count === undefined) this.collaborator_count = 0;
-    if (!this.collaborator_ids) this.collaborator_ids = [];
   }
 }

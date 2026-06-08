@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards, Body, Post } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, Body, Post, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ListRequestsUseCase } from './application/use-cases/list-requests.usecase';
 import { ApproveRequestUseCase } from './application/use-cases/approve-request.usecase';
@@ -24,7 +24,11 @@ export class RequestController {
 
   @Get()
   @ApiOperation({ summary: 'Get list of requests with optional filtering and sorting' })
-  async getRequests(@Query() filter: ListRequestsDto) {
-    return this.listRequestsUseCase.execute(filter);
+  async getRequests(@Query() filter: ListRequestsDto, @Req() req: any) {
+    const adminStoreId = req.user?.store_id;
+    const finalFilter = adminStoreId
+      ? { ...filter, store_id: adminStoreId }
+      : filter;
+    return this.listRequestsUseCase.execute(finalFilter);
   }
 }

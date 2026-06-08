@@ -22,4 +22,9 @@ export class ListRequestsDto {
   @IsOptional()
   @IsIn(['ASC', 'DESC'])
   readonly sort_order?: 'ASC' | 'DESC';
+
+  @ApiPropertyOptional({ description: 'Filter by store ID' })
+  @IsOptional()
+  @IsString()
+  readonly store_id?: string;
 }

@@ -1,3 +1,5 @@
+import { UserGender } from '../../../user/domain/entities/user.entity';
+
 export class StoreUser {
     store_id: string;
     user_id: string;
@@ -5,6 +7,9 @@ export class StoreUser {
     avatar?: string;
     is_verify: boolean;
     role?: string;
+    gender?: UserGender;
+    birth_date?: string;
+    occupation?: string;
     created_at: string;
 
     constructor(partial: Partial<StoreUser>) {

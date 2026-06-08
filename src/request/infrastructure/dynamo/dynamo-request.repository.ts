@@ -73,6 +73,7 @@ export class DynamoRequestRepository implements RequestRepository {
   async findAll(filters?: {
     type?: string;
     status?: string;
+    store_id?: string;
     sort_by?: string;
     sort_order?: 'ASC' | 'DESC';
   }): Promise<Request[]> {
@@ -90,6 +91,12 @@ export class DynamoRequestRepository implements RequestRepository {
       filterExpressions.push('#type = :type');
       expressionAttributeNames['#type'] = 'type';
       expressionAttributeValues[':type'] = filters.type;
+    }
+
+    if (filters?.store_id) {
+      filterExpressions.push('#store_id = :store_id');
+      expressionAttributeNames['#store_id'] = 'store_id';
+      expressionAttributeValues[':store_id'] = filters.store_id;
     }
 
     const filterExpression = filterExpressions.length > 0
