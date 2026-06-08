@@ -2,6 +2,11 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateAdminDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  user_name: string;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsEmail()

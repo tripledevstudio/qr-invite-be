@@ -36,11 +36,12 @@ export class LoginUseCase {
   }
 
   private generateTokens(user: User) {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      phone_number: user.phone_number,
-      role: user.role,
+       const payload = {
+         sub: user.id,
+         email: user.email,
+         phone_number: user.phone_number,
+         role: user.role,
+         store_id: user.current_store_id,
     };
 
     return {

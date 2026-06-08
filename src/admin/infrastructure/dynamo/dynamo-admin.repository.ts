@@ -55,6 +55,17 @@ export class DynamoAdminRepository implements AdminRepository {
     return (result.Items?.[0] as Admin) ?? null;
   }
 
+  async findByUserName(userName: string): Promise<Admin | null> {
+    const result = await this.dynamoRepository.send(
+      new ScanCommand({
+        TableName: this.tableName,
+        FilterExpression: 'user_name = :userName',
+        ExpressionAttributeValues: { ':userName': userName },
+      })
+    );
+    return (result.Items?.[0] as Admin) ?? null;
+  }
+
   async findByStoreId(storeId: string): Promise<Admin | null> {
     const result = await this.dynamoRepository.send(
       new ScanCommand({

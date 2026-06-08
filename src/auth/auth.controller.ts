@@ -6,6 +6,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { ChangeStoreDto } from './dto/change-store.dto';
 
 import { RegisterUseCase } from './application/use-cases/register.usecase';
 import { LoginUseCase } from './application/use-cases/login.usecase';
@@ -15,6 +16,9 @@ import { VerifyEmailUseCase } from './application/use-cases/verify-email.usecase
 import { ForgotPasswordUseCase } from './application/use-cases/forgot-password.usecase';
 import { VerifyForgotPasswordOtpUseCase } from './application/use-cases/verify-forgot-password-otp.usecase';
 import { ResetPasswordUseCase } from './application/use-cases/reset-password.usecase';
+import { ChangeStoreUseCase } from './application/use-cases/change-store.usecase';
+import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
+import { UseGuards, Req } from '@nestjs/common';
 
 @ApiTags('Auth')
 @ApiBearerAuth()
@@ -29,6 +33,7 @@ export class AuthController {
     private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
     private readonly verifyForgotPasswordOtpUseCase: VerifyForgotPasswordOtpUseCase,
     private readonly resetPasswordUseCase: ResetPasswordUseCase,
+    private readonly changeStoreUseCase: ChangeStoreUseCase,
   ) {}
 
   @Post('register')
@@ -75,5 +80,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return this.resetPasswordUseCase.execute(resetPasswordDto);
+  }
+
+  @Post('change-store')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  changeStore(@Req() req: any, @Body() changeStoreDto: ChangeStoreDto) {
+    return this.changeStoreUseCase.execute(req.user.userId, changeStoreDto.store_id);
   }
 }

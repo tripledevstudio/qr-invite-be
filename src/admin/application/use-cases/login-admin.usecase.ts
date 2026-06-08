@@ -20,13 +20,17 @@ export class LoginAdminUseCase {
   ) {}
 
   async execute(dto: LoginAdminDto) {
-    const { phone_number, password } = dto;
+    const { user_name, password } = dto;
 
-    if (!phone_number) {
-      throw new BadRequestException('Phone number is required');
+    if (!user_name) {
+      throw new BadRequestException('User name is required');
     }
 
-    const admin: Admin | null = await this.adminRepository.findByPhone(phone_number);
+    let admin: Admin | null = null;
+    
+    if (user_name) {
+      admin = await this.adminRepository.findByUserName(user_name.trim().toUpperCase());
+    }
 
     if (!admin) {
       throw new BadRequestException('Admin not found');
@@ -39,6 +43,8 @@ export class LoginAdminUseCase {
 
     const payload = {
       sub: admin.id,
+      user_name: admin.user_name,
+      role: 'ADMIN',
       store_id: admin.store_id,
     };
 

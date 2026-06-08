@@ -32,6 +32,7 @@ export class User {
   forgot_password_otp?: string;
   forgot_password_otp_expires_at?: string;
   store_ids?: string[];
+  current_store_id?: string;
 
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);

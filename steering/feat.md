@@ -23,10 +23,11 @@ src/<module-name>/
 1. **Define Entity**: Create the core class in `src/<module>/domain/entities/<entity>.entity.ts` with a constructor accepting `Partial<Entity>`.
 2. **Define Repository Contract**: Create the repository interface and injection token in `src/<module>/domain/repositories/<entity>.repository.ts`.
 3. **Implement Repository**: Write the DynamoDB implementation using `@aws-sdk/lib-dynamodb` and `DynamoRepository` wrapper in `src/<module>/infrastructure/dynamo/dynamo-<entity>.repository.ts`.
-4. **Define DTOs**: Create DTOs with validation rules in `src/<module>/dto/`.
-5. **Create Use Cases**: Add distinct business operation classes in `src/<module>/application/use-cases/`. Inject repositories via the token.
-6. **Expose Controller**: Create HTTP handlers in `src/<module>/<module>.controller.ts`.
-7. **Wire Module**: Declare everything in `src/<module>/<module>.module.ts`.
+4. **Ensure Table Exists**: Add the new table name constant in `src/dynamo/constants.ts` and include it in the `ensureTablesExist` method within `src/dynamo/dynamo.service.ts` so the table is automatically created if it doesn't exist.
+5. **Define DTOs**: Create DTOs with validation rules in `src/<module>/dto/`.
+6. **Create Use Cases**: Add distinct business operation classes in `src/<module>/application/use-cases/`. Inject repositories via the token.
+7. **Expose Controller**: Create HTTP handlers in `src/<module>/<module>.controller.ts`.
+8. **Wire Module**: Declare everything in `src/<module>/<module>.module.ts`.
 
 ## 3. General Principles
 - Keep use-cases focused on a single business action (Single Responsibility Principle).

@@ -17,3 +17,4 @@ When you type `/refactor` in the chat, this file provides the guiding principles
 - Do not alter public repository interfaces unless a migration plan is in place.
 - Keep the domain entities pure (no DynamoDB‑specific code).
 - Keep Use‑Cases focused on a single business operation.
+- **DynamoDB Tables**: When renaming or restructuring modules, ensure any new/modified table names are updated in `src/dynamo/constants.ts` and registered for auto-creation in `DynamoDBService#ensureTablesExist`.

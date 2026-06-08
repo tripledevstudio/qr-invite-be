@@ -12,6 +12,7 @@ import { PaginationModule } from './common/pagination/pagination.module';
 import { StoreModule } from './store/store.module';
 import { PaymentModule } from './payment/payment.module';
 import { AdminModule } from './admin/admin.module';
+import { ServiceModule } from './service/service.module';
 
 @Module({
   imports: [
@@ -19,15 +20,16 @@ import { AdminModule } from './admin/admin.module';
       isGlobal: true,
       load: [configuration],
     }),
-    UploadModule,
-    DynamoModule,
-    UserModule,
     AuthModule,
+    AdminModule,
+    UserModule,
+    PaymentModule,
+    StoreModule,
+    ServiceModule,
     CheckInModule,
     PaginationModule,
-    StoreModule,
-    PaymentModule,
-    AdminModule,
+    UploadModule,
+    DynamoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
