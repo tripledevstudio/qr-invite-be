@@ -5,6 +5,7 @@ import { ListStoresUseCase } from './application/use-cases/list-stores.usecase';
 import { GetStoreUseCase } from './application/use-cases/get-store.usecase';
 import { UpdateStoreUseCase } from './application/use-cases/update-store.usecase';
 import { DeleteStoreUseCase } from './application/use-cases/delete-store.usecase';
+import { ListStoreUsersUseCase } from './application/use-cases/list-store-users.usecase';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { PaginationDto } from '../common/pagination/pagination.dto';
@@ -20,8 +21,9 @@ export class StoreController {
     private readonly getStoreUseCase: GetStoreUseCase,
     private readonly updateStoreUseCase: UpdateStoreUseCase,
     private readonly deleteStoreUseCase: DeleteStoreUseCase,
+    private readonly listStoreUsersUseCase: ListStoreUsersUseCase,
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a new store' })
@@ -54,5 +56,11 @@ export class StoreController {
   @ApiOperation({ summary: 'Delete store by ID' })
   async remove(@Param('id') id: string) {
     return this.deleteStoreUseCase.execute(id);
+  }
+
+  @Get(':id/users')
+  @ApiOperation({ summary: 'Get list of users in store' })
+  async findUsers(@Param('id') id: string) {
+    return this.listStoreUsersUseCase.execute(id);
   }
 }

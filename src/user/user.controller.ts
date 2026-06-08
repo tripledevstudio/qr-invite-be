@@ -26,13 +26,13 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(
-  private readonly createUserUseCase: CreateUserUseCase,
-  private readonly getUserUseCase: GetUserUseCase,
-  private readonly updateUserUseCase: UpdateUserUseCase,
-  private readonly deleteUserUseCase: DeleteUserUseCase,
-  private readonly getPaymentInfoUseCase: GetPaymentInfoUseCase,
-  private readonly getUserByInviteCodeUseCase: GetUserByInviteCodeUseCase,
-  ) {}
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly getUserUseCase: GetUserUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
+    private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly getPaymentInfoUseCase: GetPaymentInfoUseCase,
+    private readonly getUserByInviteCodeUseCase: GetUserByInviteCodeUseCase,
+  ) { }
 
   @Post()
   create(@Body() createDto: CreateUserDto) {
@@ -41,9 +41,9 @@ export class UserController {
 
   @Get('me')
   async me(@Req() req: any) {
-    const { userId } = req.user;
-    const user = await this.getUserUseCase.execute(userId);
-    const paymentInfo = await this.getPaymentInfoUseCase.execute(userId);
+    const { user_id } = req.user;
+    const user = await this.getUserUseCase.execute(user_id);
+    const paymentInfo = await this.getPaymentInfoUseCase.execute(user_id);
     let bankInfo: string | null = null;
     if (paymentInfo?.bank_code && paymentInfo?.account_number) {
       const last4 = paymentInfo.account_number.slice(-4);

@@ -104,7 +104,33 @@ src/<module-name>/
 - **Service Deprecation**: Break down fat services into single-responsibility Use Cases in the `application/use-cases/` directory.
 - **Type Strictness**: Replace `any` types in older code with strict DTOs and Entity classes.
 
-## 4. General Rules
+## 4. Dependency Injection & Module Resolution
+To prevent NestJS `UnknownDependenciesException` and ensure correct cross-module dependency resolution:
+- **Exporting Providers/Tokens**: If a module (e.g., `RequestModule`) defines a repository (e.g., `REQUEST_REPOSITORY_TOKEN`) or a UseCase that will be used by other modules, **it MUST be added to the `exports` array** of that module.
+- **Importing Modules**: If a UseCase or Controller in `Module A` injects a token or provider from `Module B`, you **MUST add `Module B` to the `imports` array** of `Module A`.
+- **Infrastructure Dependencies**: If a repository implementation depends on an external service (like `DynamoRepository`), the defining module must import the module providing that service (e.g., `imports: [DynamoModule]`).
+- Example:
+  ```typescript
+  @Module({
+    imports: [DynamoModule, UserModule], // Needed to resolve DynamoRepository and UserRepository
+    controllers: [RequestController],
+    providers: [
+      { provide: REQUEST_REPOSITORY_TOKEN, useClass: DynamoRequestRepository },
+      ApproveRequestUseCase
+    ],
+    exports: [REQUEST_REPOSITORY_TOKEN, ApproveRequestUseCase] // Exported so other modules can use them
+  })
+  export class RequestModule {}
+  ```
+
+## 5. General Rules
 - Always use `camelCase` for variables/methods and `kebab-case` for file names.
 - Ensure dependency injection relies on tokens/interfaces to keep modules loosely coupled.
 - Keep `package.json` clean and rely on standard `nest` commands for building and starting the app.
+
+## 6. DynamoDB Table Management
+- All DynamoDB tables must be defined in `src/dynamo/constants.ts` and the same names must exist in your DynamoDB environment (AWS, LocalStack, or DynamoDB Local).
+- When adding a new repository, reference the table via its exported constant (e.g., `REQUEST_TABLE_NAME`).
+- Ensure the table is provisioned before the NestJS application starts. You can add a startup health‑check service or include table‑creation scripts in your deployment pipeline.
+- If a table is missing, the DynamoDB client will throw `ResourceNotFoundException`. Treat this as a critical startup error and verify the table existence during development and CI.
+- Document any newly added tables in this section, listing the constant name and the physical DynamoDB table name.

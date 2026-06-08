@@ -9,21 +9,21 @@ export class ChangeStoreUseCase {
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
-  async execute(userId: string, newStoreId: string) {
-    const user = await this.userRepository.findById(userId);
+  async execute(user_id: string, newStoreId: string) {
+    const user = await this.userRepository.findById(user_id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     // Optional: verify that store exists using StoreRepository, or if user has access to it.
     // For now we just update it.
-    await this.userRepository.update(userId, { current_store_id: newStoreId });
+    await this.userRepository.update(user_id, { current_store_id: newStoreId });
 
     // Ensure it's in the array if needed (though not explicitly required, it might be good practice)
     // If requirement doesn't mention, let's keep it simple and just update the current_store_id.
-    
+
     // Refresh user data (if necessary, though we have it)
     user.current_store_id = newStoreId;
 

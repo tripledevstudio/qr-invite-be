@@ -31,5 +31,5 @@ src/<module-name>/
 
 ## 3. General Principles
 - Keep use-cases focused on a single business action (Single Responsibility Principle).
-- Use `camelCase` for code and variables, `kebab-case` for file names.
+- Use `snake_case` for code and variables, `kebab-case` for file names.
 - Do not mix database-specific types (like DynamoDB AttributeValues) inside Entities or Use Cases.

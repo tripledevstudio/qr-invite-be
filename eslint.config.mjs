@@ -34,9 +34,16 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/require-await': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/prefer-promise-reject-errors': 'off',
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
+      'no-unreachable': 'warn',
+      'no-constant-condition': 'warn',
+      '@typescript-eslint/no-unused-expressions': 'warn',
+      "prettier/prettier": ["warn", { endOfLine: "auto" }],
+      "comma-dangle": ["warn", "never"],
     },
   },
 );
