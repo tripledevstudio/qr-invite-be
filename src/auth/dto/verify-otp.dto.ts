@@ -8,5 +8,5 @@ export class VerifyOtpDto {
   phone_number?: string;
 
   @ApiProperty()
-  otp: string;
+  otp!: string;
 }

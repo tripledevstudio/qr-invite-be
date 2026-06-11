@@ -8,5 +8,5 @@ export class LoginDto {
   user_name?: string;
 
   @ApiProperty()
-  password: string;
+  password!: string;
 }
