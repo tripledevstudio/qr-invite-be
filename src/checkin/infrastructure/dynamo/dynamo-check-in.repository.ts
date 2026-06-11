@@ -18,7 +18,7 @@ import { CheckIn } from '../../domain/entities/check-in.entity';
 export class DynamoCheckInRepository implements CheckInRepository {
   private readonly tableName = CHECK_IN_TABLE_NAME;
 
-  constructor(private readonly dynamoRepository: DynamoRepository) { }
+  constructor(private readonly dynamoRepository: DynamoRepository) {}
 
   async checkIn(dto: any): Promise<CheckIn> {
     const item: CheckIn = {

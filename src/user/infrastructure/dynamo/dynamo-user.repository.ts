@@ -83,7 +83,7 @@ export class DynamoUserRepository implements UserRepository {
   async update(id: string, user: Partial<User>): Promise<User> {
     const keys = Object.keys(user);
     if (keys.length === 0) {
-      return (await this.findById(id)) as User;
+      return await this.findById(id);
     }
 
     const updateExpressions = keys.map((_key, i) => `#k${i} = :v${i}`).join(', ');
@@ -106,7 +106,7 @@ export class DynamoUserRepository implements UserRepository {
       }),
     );
 
-    return (await this.findById(id)) as User;
+    return await this.findById(id);
   }
 
   async delete(id: string): Promise<void> {

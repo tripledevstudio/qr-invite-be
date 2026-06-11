@@ -53,7 +53,7 @@ export class DynamoPaymentInfoRepository implements PaymentInfoRepository {
       }),
     );
 
-    return (await this.getByUserId(userId)) as PaymentInfo;
+    return await this.getByUserId(userId);
   }
 
   async delete(userId: string): Promise<void> {

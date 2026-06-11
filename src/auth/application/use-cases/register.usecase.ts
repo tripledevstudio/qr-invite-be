@@ -16,7 +16,7 @@ export class RegisterUseCase {
     private readonly userRepository: UserRepository,
     @Inject(REQUEST_REPOSITORY_TOKEN)
     private readonly requestRepository: RequestRepository,
-  ) { }
+  ) {}
 
   async execute(registerDto: RegisterDto) {
     const { email, phone_number, password, ...rest } = registerDto;
