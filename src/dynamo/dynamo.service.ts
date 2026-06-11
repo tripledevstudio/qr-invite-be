@@ -25,7 +25,11 @@ export class DynamoDBService implements OnModuleInit {
     const region = this.configService.get<string>('database.awsRegion') || process.env.AWS_REGION;
     const accessKeyId = this.configService.get<string>('database.awsAccessKeyId') || process.env.AWS_ACCESS_KEY_ID;
     const secretAccessKey = this.configService.get<string>('database.awsSecretAccessKey') || process.env.AWS_SECRET_ACCESS_KEY;
-
+    // LOG RA ĐỂ KIỂM TRA (Vercel sẽ hiển thị cái này trong phần Logs)
+    console.log('--- DEBUG AWS CONFIG ---');
+    console.log('Region:', region);
+    console.log('AccessKeyId length:', accessKeyId ? accessKeyId.length : 'NULL');
+    console.log('SecretKey length:', secretAccessKey ? secretAccessKey.length : 'NULL');
     this.client = new DynamoDBClient({
       region: region || 'ap-southeast-1',
       credentials: {
