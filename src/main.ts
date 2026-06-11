@@ -4,15 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  // Serve static assets from the project root's `public` folder.
-  // Using `process.cwd()` ensures the correct path regardless of the compiled location.
-  app.useStaticAssets(join(process.cwd(), 'public'));
+  const app = await NestFactory.create(AppModule);
 
   app.enableCors();
   // Global pipes
@@ -42,17 +36,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, document, {
+  SwaggerModule.setup('docs', app, document, {
     customSiteTitle: 'QR INVITE API Docs',
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customCssUrl:
-      'https://qr-invite-be.vercel.app/api/swagger-ui.css',
-    customJs: [
-      'https://qr-invite-be.vercel.app/api/swagger-ui-bundle.js',
-      'https://qr-invite-be.vercel.app/api/swagger-ui-standalone-preset.js',
-    ],
   });
 
   app.useGlobalPipes(new ValidationPipe());
