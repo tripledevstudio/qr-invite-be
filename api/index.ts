@@ -1,6 +1,3 @@
-// import '../src/main';
-// api/index.ts
-
 import serverlessExpress from '@codegenie/serverless-express';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
@@ -8,17 +5,28 @@ import { AppModule } from '../src/app.module';
 let cachedServer: any;
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    try {
+        console.log('Creating Nest app');
 
-    app.setGlobalPrefix('api');
+        const app = await NestFactory.create(AppModule);
 
-    await app.init();
+        console.log('Nest app created');
 
-    const expressApp = app.getHttpAdapter().getInstance();
+        app.setGlobalPrefix('api');
 
-    return serverlessExpress({
-        app: expressApp,
-    });
+        await app.init();
+
+        console.log('Nest app initialized');
+
+        const expressApp = app.getHttpAdapter().getInstance();
+
+        return serverlessExpress({
+            app: expressApp,
+        });
+    } catch (error) {
+        console.error('BOOTSTRAP ERROR:', error);
+        throw error;
+    }
 }
 
 export default async function handler(req: any, res: any) {
