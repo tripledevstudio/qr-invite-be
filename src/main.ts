@@ -1,26 +1,23 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import express from 'express';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+const server = express();
+
+export async function bootstrap() {
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
   app.enableCors();
-
-  app.useGlobalPipes(new ValidationPipe());
-
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalFilters(new HttpExceptionFilter());
-
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  app.setGlobalPrefix('api', {
-    exclude: ['/'],
-  });
-
+  app.setGlobalPrefix('api', { exclude: ['/docs'] });
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
@@ -34,10 +31,11 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document, {
+    customSiteTitle: 'QR INVITE API Docs',
+    swaggerOptions: { persistAuthorization: true },
+  });
 
-  SwaggerModule.setup('docs', app, document);
-
-  await app.listen(process.env.PORT ?? 3000);
+  await app.init();
+  return server;
 }
-
-bootstrap();
