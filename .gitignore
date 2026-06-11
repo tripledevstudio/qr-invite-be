@@ -56,3 +56,17 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Documentation
+docs/
+
+# Steering
+steering/
+
+steering_map.json
+steering.sh
+
+AI_STEERING.md
+CODEFLOW.md
+
+.clinerules
