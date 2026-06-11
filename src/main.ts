@@ -10,7 +10,9 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  // Serve static assets from the project root's `public` folder.
+  // Using `process.cwd()` ensures the correct path regardless of the compiled location.
+  app.useStaticAssets(join(process.cwd(), 'public'));
 
   app.enableCors();
   // Global pipes
@@ -45,10 +47,10 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customCssUrl: '/api/swagger-ui.css',
+    customCssUrl: '/swagger-ui.css',
     customJs: [
-      '/api/swagger-ui-bundle.js',
-      '/api/swagger-ui-standalone-preset.js',
+      '/swagger-ui-bundle.js',
+      '/swagger-ui-standalone-preset.js',
     ],
   });
 
