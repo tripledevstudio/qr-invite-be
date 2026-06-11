@@ -18,7 +18,7 @@ import { CheckIn } from '../../domain/entities/check-in.entity';
 export class DynamoCheckInRepository implements CheckInRepository {
   private readonly tableName = CHECK_IN_TABLE_NAME;
 
-  constructor(private readonly dynamoRepository: DynamoRepository) {}
+  constructor(private readonly dynamoRepository: DynamoRepository) { }
 
   async checkIn(dto: any): Promise<CheckIn> {
     const item: CheckIn = {
@@ -62,7 +62,7 @@ export class DynamoCheckInRepository implements CheckInRepository {
       return this.findOne(id);
     }
 
-    const updateExpressions = keys.map((key, i) => `#k${i} = :v${i}`).join(', ');
+    const updateExpressions = keys.map((_key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 
