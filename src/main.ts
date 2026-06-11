@@ -47,6 +47,12 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
+    customCssUrl:
+      'https://qr-invite-be.vercel.app/swagger-ui.css',
+    customJs: [
+      'https://qr-invite-be.vercel.app/swagger-ui-bundle.js',
+      'https://qr-invite-be.vercel.app/swagger-ui-standalone-preset.js',
+    ],
   });
 
   app.useGlobalPipes(new ValidationPipe());
