@@ -17,7 +17,7 @@ export async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  app.setGlobalPrefix('api', { exclude: ['/docs'] });
+  app.setGlobalPrefix('api');
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
@@ -34,6 +34,11 @@ export async function bootstrap() {
   SwaggerModule.setup('docs', app, document, {
     customSiteTitle: 'QR INVITE API Docs',
     swaggerOptions: { persistAuthorization: true },
+    customJs: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js'
+    ],
+    customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css'
   });
 
   await app.init();
