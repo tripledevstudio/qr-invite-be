@@ -9,7 +9,7 @@ export class ChangeStoreUseCase {
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async execute(user_id: string, newStoreId: string) {
     const user = await this.userRepository.findById(user_id);
@@ -37,7 +37,9 @@ export class ChangeStoreUseCase {
 
     // Clean undefined values
     Object.keys(payload).forEach(
-      (key) => payload[key as keyof typeof payload] === undefined && delete payload[key as keyof typeof payload]
+      (key) =>
+        payload[key as keyof typeof payload] === undefined &&
+        delete payload[key as keyof typeof payload],
     );
 
     return {

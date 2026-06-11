@@ -1,6 +1,6 @@
 export class Service {
-  id: string;
-  name: string;
+  id!: string;
+  name!: string;
   description?: string;
   image?: string;
   images?: string[];
@@ -8,8 +8,8 @@ export class Service {
   monetary_value?: number;
   quantity?: number;
   store_id?: string;
-  created_at: string;
-  updated_at: string;
+  created_at!: string;
+  updated_at!: string;
 
   constructor(partial: Partial<Service>) {
     Object.assign(this, partial);

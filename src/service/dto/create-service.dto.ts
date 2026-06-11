@@ -1,17 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  IsNumber,
-  IsArray,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsArray } from 'class-validator';
 
 export class CreateServiceDto {
   @ApiProperty({ description: 'Name of the service', example: 'Premium Cleaning' })
   @IsString()
   @IsNotEmpty()
-  readonly name: string;
+  readonly name!: string;
 
   @ApiPropertyOptional({ description: 'Detailed description of the service' })
   @IsString()
@@ -42,5 +36,4 @@ export class CreateServiceDto {
   @IsNumber()
   @IsOptional()
   readonly quantity?: number;
-
 }

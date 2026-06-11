@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Body,
-  Put,
-  Delete,
-  UseGuards,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, Req } from '@nestjs/common';
 import { CreateUserUseCase } from './application/use-cases/create-user.usecase';
 import { GetUserUseCase } from './application/use-cases/get-user.usecase';
 import { UpdateUserUseCase } from './application/use-cases/update-user.usecase';
@@ -32,7 +22,7 @@ export class UserController {
     private readonly deleteUserUseCase: DeleteUserUseCase,
     private readonly getPaymentInfoUseCase: GetPaymentInfoUseCase,
     private readonly getUserByInviteCodeUseCase: GetUserByInviteCodeUseCase,
-  ) { }
+  ) {}
 
   @Post()
   create(@Body() createDto: CreateUserDto) {

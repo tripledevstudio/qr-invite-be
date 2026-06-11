@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
- 
+
 import { DynamoModule } from '../dynamo/dynamo.module';
 import { PaymentModule } from '../payment/payment.module';
 import { StoreModule } from '../store/store.module';

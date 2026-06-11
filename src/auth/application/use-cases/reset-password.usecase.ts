@@ -43,7 +43,7 @@ export class ResetPasswordUseCase {
 
     const hashedPassword = await bcrypt.hash(new_password, 10);
 
-    await this.userRepository.update(user.id!, {
+    await this.userRepository.update(user.id, {
       password: hashedPassword,
       forgot_password_otp: '',
       forgot_password_otp_expires_at: '',

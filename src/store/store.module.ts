@@ -27,4 +27,4 @@ import { ListStoreUsersUseCase } from './application/use-cases/list-store-users.
   ],
   exports: [STORE_REPOSITORY_TOKEN, STORE_USER_REPOSITORY_TOKEN],
 })
-export class StoreModule { }
+export class StoreModule {}

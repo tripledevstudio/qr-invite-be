@@ -12,7 +12,7 @@ export class RefreshTokenUseCase {
       const payload = this.jwtService.verify(refresh_token, {
         secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
       });
-      
+
       const newPayload = {
         sub: payload.sub,
         email: payload.email,
@@ -23,7 +23,9 @@ export class RefreshTokenUseCase {
 
       // clean undefined values
       Object.keys(newPayload).forEach(
-        (key) => newPayload[key as keyof typeof newPayload] === undefined && delete newPayload[key as keyof typeof newPayload]
+        (key) =>
+          newPayload[key as keyof typeof newPayload] === undefined &&
+          delete newPayload[key as keyof typeof newPayload],
       );
 
       return {
@@ -37,7 +39,7 @@ export class RefreshTokenUseCase {
           expiresIn: '7d',
         }),
       };
-    } catch (error) {
+    } catch (_) {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }

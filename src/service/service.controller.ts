@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards, Req, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+  Req,
+  Query,
+} from '@nestjs/common';
 import type { Request } from 'express';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -34,7 +45,11 @@ export class ServiceController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Req() req: Request, @Body() dto: UpdateServiceDto): Promise<Service> {
+  async update(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Body() dto: UpdateServiceDto,
+  ): Promise<Service> {
     const storeId = (req as any).user?.store_id;
     return this.updateServiceUseCase.execute(id, dto, storeId);
   }

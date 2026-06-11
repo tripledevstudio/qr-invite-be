@@ -19,9 +19,7 @@ export class DynamoPaymentInfoRepository implements PaymentInfoRepository {
   }
 
   async update(userId: string, data: Partial<PaymentInfo>): Promise<PaymentInfo> {
-    const keys = Object.keys(data).filter(
-      (key) => data[key as keyof PaymentInfo] !== undefined,
-    );
+    const keys = Object.keys(data).filter((key) => data[key as keyof PaymentInfo] !== undefined);
 
     const updateExpressionsList: string[] = [];
     const expressionAttributeNames: Record<string, string> = {};

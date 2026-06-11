@@ -1,6 +1,10 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
+
 export class Store {
-  id: string;
-  name: string;
+  @ApiPropertyOptional({ description: 'Admin user ID that owns this store' })
+  user_id?: string;
+  id!: string;
+  name!: string;
   address?: string;
   phone_number?: string;
   email?: string;
@@ -13,8 +17,8 @@ export class Store {
 
   constructor(partial: Partial<Store>) {
     Object.assign(this, partial);
-    if (!this.created_at) this.created_at = new Date().toISOString();
-    if (!this.updated_at) this.updated_at = new Date().toISOString();
+    this.created_at = partial.created_at || new Date().toISOString();
+    this.updated_at = partial.updated_at || new Date().toISOString();
     if (this.default_commission === undefined) this.default_commission = 10;
     if (this.extra_bonus === undefined) this.extra_bonus = 0;
     if (this.monthly_revenue === undefined) this.monthly_revenue = 0;

@@ -18,8 +18,8 @@ export class VerifyEmailUseCase {
       });
       const user = await this.userRepository.findById(payload.sub);
       if (!user) throw new NotFoundException('User not found');
-      
-      await this.userRepository.update(user.id!, { is_verify: true });
+
+      await this.userRepository.update(user.id, { is_verify: true });
       return { message: 'Email verified successfully' };
     } catch (error) {
       if (error instanceof NotFoundException) {

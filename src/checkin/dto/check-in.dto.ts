@@ -10,7 +10,10 @@ export class CheckInDto {
   @IsNotEmpty()
   readonly user_id: string;
 
-  @ApiProperty({ name: 'store_id', description: 'Identifier of the store where the user checks in' })
+  @ApiProperty({
+    name: 'store_id',
+    description: 'Identifier of the store where the user checks in',
+  })
   @IsString()
   @IsNotEmpty()
   readonly store_id: string;

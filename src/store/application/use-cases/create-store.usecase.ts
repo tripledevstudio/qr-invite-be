@@ -8,7 +8,7 @@ import { Store } from '../../domain/entities/store.entity';
 export class CreateStoreUseCase {
   constructor(@Inject(STORE_REPOSITORY_TOKEN) private readonly storeRepo: StoreRepository) {}
 
-  async execute(dto: CreateStoreDto): Promise<Store> {
-    return this.storeRepo.create(dto);
+  async execute(dto: CreateStoreDto, adminId: string): Promise<Store> {
+    return this.storeRepo.create({ ...dto, user_id: adminId });
   }
 }

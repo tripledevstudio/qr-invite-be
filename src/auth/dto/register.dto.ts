@@ -34,7 +34,10 @@ export class RegisterDto {
   @IsEnum(UserRole)
   role?: UserRole;
 
-  @ApiPropertyOptional({ description: 'List of store IDs this user is registering for', type: [String] })
+  @ApiPropertyOptional({
+    description: 'List of store IDs this user is registering for',
+    type: [String],
+  })
   @IsOptional()
   @IsArray()
   store_ids?: string[];

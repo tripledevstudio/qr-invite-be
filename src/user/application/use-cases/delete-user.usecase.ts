@@ -15,7 +15,7 @@ export class DeleteUserUseCase {
     private readonly storeRepository: StoreRepository,
     @Inject(STORE_USER_REPOSITORY_TOKEN)
     private readonly storeUserRepository: StoreUserRepository,
-  ) { }
+  ) {}
 
   async execute(id: string): Promise<void> {
     const user = await this.userRepository.findById(id);

@@ -2,12 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DynamoRepository } from '../../../dynamo/dynamo.repository';
 import { Request, RequestStatus } from '../../domain/entities/request.entity';
 import { RequestRepository } from '../../domain/repositories/request.repository';
-import {
-  PutCommand,
-  GetCommand,
-  UpdateCommand,
-  ScanCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { PutCommand, GetCommand, UpdateCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { randomUUID } from 'crypto';
 import { REQUEST_TABLE_NAME } from '../../../dynamo/constants';
 
@@ -15,7 +10,7 @@ import { REQUEST_TABLE_NAME } from '../../../dynamo/constants';
 export class DynamoRequestRepository implements RequestRepository {
   private readonly tableName = REQUEST_TABLE_NAME;
 
-  constructor(private readonly dynamoRepository: DynamoRepository) { }
+  constructor(private readonly dynamoRepository: DynamoRepository) {}
 
   async create(request: Request): Promise<Request> {
     const item = { ...request, id: request.id ?? randomUUID(), status: RequestStatus.PENDING };
@@ -25,7 +20,7 @@ export class DynamoRequestRepository implements RequestRepository {
 
   async findById(id: string): Promise<Request | null> {
     const result = await this.dynamoRepository.send(
-      new GetCommand({ TableName: this.tableName, Key: { id } })
+      new GetCommand({ TableName: this.tableName, Key: { id } }),
     );
     return (result.Item as Request) ?? null;
   }
@@ -36,7 +31,7 @@ export class DynamoRequestRepository implements RequestRepository {
       return this.findById(id);
     }
 
-    const updateExpressions = keys.map((key, i) => `#k${i} = :v${i}`).join(', ');
+    const updateExpressions = keys.map((_key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 
@@ -53,7 +48,7 @@ export class DynamoRequestRepository implements RequestRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      })
+      }),
     );
 
     return this.findById(id);
@@ -65,7 +60,7 @@ export class DynamoRequestRepository implements RequestRepository {
         TableName: this.tableName,
         FilterExpression: 'user_id = :user_id',
         ExpressionAttributeValues: { ':user_id': userId },
-      })
+      }),
     );
     return (result.Items as Request[]) ?? [];
   }
@@ -99,20 +94,23 @@ export class DynamoRequestRepository implements RequestRepository {
       expressionAttributeValues[':store_id'] = filters.store_id;
     }
 
-    const filterExpression = filterExpressions.length > 0
-      ? filterExpressions.join(' AND ')
-      : undefined;
+    const filterExpression =
+      filterExpressions.length > 0 ? filterExpressions.join(' AND ') : undefined;
 
     const result = await this.dynamoRepository.send(
       new ScanCommand({
         TableName: this.tableName,
         ...(filterExpression && { FilterExpression: filterExpression }),
-        ...(Object.keys(expressionAttributeNames).length > 0 && { ExpressionAttributeNames: expressionAttributeNames }),
-        ...(Object.keys(expressionAttributeValues).length > 0 && { ExpressionAttributeValues: expressionAttributeValues }),
-      })
+        ...(Object.keys(expressionAttributeNames).length > 0 && {
+          ExpressionAttributeNames: expressionAttributeNames,
+        }),
+        ...(Object.keys(expressionAttributeValues).length > 0 && {
+          ExpressionAttributeValues: expressionAttributeValues,
+        }),
+      }),
     );
 
-    let items = (result.Items as Request[]) ?? [];
+    const items = (result.Items as Request[]) ?? [];
 
     // Sorting in memory
     const sortBy = filters?.sort_by || 'created_at';

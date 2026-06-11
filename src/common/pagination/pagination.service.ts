@@ -32,13 +32,13 @@ export class PaginationService {
     const items = data.slice(startIdx, startIdx + pageSize);
     const hasReachedEnd = safePage >= totalPages;
 
-  return {
-    items,
-    page: safePage,
-    page_size: pageSize,
-    total_items: totalItems,
-    total_pages: totalPages,
-    has_reached_end: hasReachedEnd,
-  };
+    return {
+      items,
+      page: safePage,
+      page_size: pageSize,
+      total_items: totalItems,
+      total_pages: totalPages,
+      has_reached_end: hasReachedEnd,
+    };
   }
 }

@@ -8,7 +8,7 @@ export class ListRequestsUseCase {
   constructor(
     @Inject(REQUEST_REPOSITORY_TOKEN)
     private readonly requestRepository: RequestRepository,
-  ) { }
+  ) {}
 
   async execute(filters: ListRequestsDto) {
     return this.requestRepository.findAll({

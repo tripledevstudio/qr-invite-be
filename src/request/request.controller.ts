@@ -1,4 +1,13 @@
-import { Controller, Get, Query, UseGuards, Body, Post, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  Body,
+  Post,
+  Req,
+  ForbiddenException,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ListRequestsUseCase } from './application/use-cases/list-requests.usecase';
 import { ApproveRequestUseCase } from './application/use-cases/approve-request.usecase';
@@ -14,7 +23,7 @@ export class RequestController {
   constructor(
     private readonly listRequestsUseCase: ListRequestsUseCase,
     private readonly approveRequestUseCase: ApproveRequestUseCase,
-  ) { }
+  ) {}
 
   @Post('approve')
   @ApiOperation({ summary: 'Approve or reject a request' })
@@ -25,10 +34,11 @@ export class RequestController {
   @Get()
   @ApiOperation({ summary: 'Get list of requests with optional filtering and sorting' })
   async getRequests(@Query() filter: ListRequestsDto, @Req() req: any) {
+    if (req.user?.role !== 'ADMIN') {
+      throw new ForbiddenException('Only ADMIN can access requests list');
+    }
     const adminStoreId = req.user?.store_id;
-    const finalFilter = adminStoreId
-      ? { ...filter, store_id: adminStoreId }
-      : filter;
+    const finalFilter = adminStoreId ? { ...filter, store_id: adminStoreId } : filter;
     return this.listRequestsUseCase.execute(finalFilter);
   }
 }

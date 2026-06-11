@@ -16,11 +16,11 @@ export enum RequestStatus {
  */
 export class Request {
   id?: string;
-  user_id: string;
+  user_id!: string;
   store_id?: string; // optional, used for withdraw requests
-  type: RequestType;
+  type!: RequestType;
   amount?: number; // amount to withdraw, applicable for WITHDRAW
-  status: RequestStatus;
+  status!: RequestStatus;
   created_at?: Date;
   updated_at?: Date;
 

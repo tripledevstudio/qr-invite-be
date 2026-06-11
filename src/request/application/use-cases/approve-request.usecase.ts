@@ -27,7 +27,7 @@ export class ApproveRequestUseCase {
     private readonly storeUserRepository: StoreUserRepository,
     @Inject(STORE_REPOSITORY_TOKEN)
     private readonly storeRepository: StoreRepository,
-  ) { }
+  ) {}
 
   async execute(dto: ApproveRequestDto) {
     const request = await this.requestRepository.findById(dto.request_id);
@@ -43,10 +43,19 @@ export class ApproveRequestUseCase {
 
     // If approval for registration, mark user as verified and add mappings
     if (dto.approved && request.type === RequestType.REGISTER) {
-      await this.userRepository.update(request.user_id, { is_verify: true });
-
       const user = await this.userRepository.findById(request.user_id);
       if (user) {
+        const updatedStoreIds = [...(user.store_ids ?? [])];
+        if (request.store_id && !updatedStoreIds.includes(request.store_id)) {
+          updatedStoreIds.push(request.store_id);
+        }
+
+        await this.userRepository.update(user.id, {
+          is_verify: true,
+          current_store_id: request.store_id ?? user.current_store_id,
+          store_ids: updatedStoreIds,
+        });
+
         const storeIdsToCreate = request.store_id ? [request.store_id] : (user.store_ids ?? []);
         for (const storeId of storeIdsToCreate) {
           await this.storeUserRepository.create(
@@ -60,7 +69,7 @@ export class ApproveRequestUseCase {
               gender: user.gender,
               birth_date: user.birth_date,
               occupation: user.occupation,
-            })
+            }),
           );
 
           // Update collaborator_count for the store

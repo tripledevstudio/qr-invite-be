@@ -25,6 +25,11 @@ import { StoreModule } from '../store/store.module';
     ApproveRequestUseCase,
     ListRequestsUseCase,
   ],
-  exports: [REQUEST_REPOSITORY_TOKEN, POINT_HISTORY_REPOSITORY_TOKEN, ApproveRequestUseCase, ListRequestsUseCase],
+  exports: [
+    REQUEST_REPOSITORY_TOKEN,
+    POINT_HISTORY_REPOSITORY_TOKEN,
+    ApproveRequestUseCase,
+    ListRequestsUseCase,
+  ],
 })
-export class RequestModule { }
+export class RequestModule {}

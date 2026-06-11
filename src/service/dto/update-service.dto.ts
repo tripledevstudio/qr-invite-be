@@ -1,10 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsString,
-  IsOptional,
-  IsNumber,
-  IsArray,
-} from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsArray } from 'class-validator';
 
 export class UpdateServiceDto {
   @ApiPropertyOptional({ description: 'Name of the service', example: 'Premium Cleaning' })

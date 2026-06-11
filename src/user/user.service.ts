@@ -1,11 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DynamoDBService } from '../dynamo/dynamo.service';
-import {
-  PutCommand,
-  GetCommand,
-  UpdateCommand,
-  DeleteCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { PutCommand, GetCommand, UpdateCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 import { randomUUID } from 'crypto';
 import { USER_TABLE_NAME } from '../dynamo/constants';
 
@@ -36,9 +31,7 @@ export class UserService {
       return this.findOne(id);
     }
 
-    const updateExpressions = keys
-      .map((key, i) => `#k${i} = :v${i}`)
-      .join(', ');
+    const updateExpressions = keys.map((_key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 

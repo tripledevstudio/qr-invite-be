@@ -20,15 +20,13 @@ export class DynamoAdminRepository implements AdminRepository {
 
   async create(admin: Admin): Promise<Admin> {
     const item = { ...admin, id: admin.id ?? randomUUID() };
-    await this.dynamoRepository.send(
-      new PutCommand({ TableName: this.tableName, Item: item })
-    );
+    await this.dynamoRepository.send(new PutCommand({ TableName: this.tableName, Item: item }));
     return item;
   }
 
   async findById(id: string): Promise<Admin | null> {
     const result = await this.dynamoRepository.send(
-      new GetCommand({ TableName: this.tableName, Key: { id } })
+      new GetCommand({ TableName: this.tableName, Key: { id } }),
     );
     return (result.Item as Admin) ?? null;
   }
@@ -39,7 +37,7 @@ export class DynamoAdminRepository implements AdminRepository {
         TableName: this.tableName,
         FilterExpression: 'email = :email',
         ExpressionAttributeValues: { ':email': email },
-      })
+      }),
     );
     return (result.Items?.[0] as Admin) ?? null;
   }
@@ -50,7 +48,7 @@ export class DynamoAdminRepository implements AdminRepository {
         TableName: this.tableName,
         FilterExpression: 'phone_number = :phone',
         ExpressionAttributeValues: { ':phone': phone },
-      })
+      }),
     );
     return (result.Items?.[0] as Admin) ?? null;
   }
@@ -61,7 +59,7 @@ export class DynamoAdminRepository implements AdminRepository {
         TableName: this.tableName,
         FilterExpression: 'user_name = :userName',
         ExpressionAttributeValues: { ':userName': userName },
-      })
+      }),
     );
     return (result.Items?.[0] as Admin) ?? null;
   }
@@ -72,7 +70,7 @@ export class DynamoAdminRepository implements AdminRepository {
         TableName: this.tableName,
         FilterExpression: 'store_id = :storeId',
         ExpressionAttributeValues: { ':storeId': storeId },
-      })
+      }),
     );
     return (result.Items?.[0] as Admin) ?? null;
   }
@@ -83,9 +81,7 @@ export class DynamoAdminRepository implements AdminRepository {
       return (await this.findById(id)) as Admin;
     }
 
-    const updateExpressions = keys
-      .map((key, i) => `#k${i} = :v${i}`)
-      .join(', ');
+    const updateExpressions = keys.map((key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 
@@ -102,15 +98,13 @@ export class DynamoAdminRepository implements AdminRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      })
+      }),
     );
 
     return (await this.findById(id)) as Admin;
   }
 
   async delete(id: string): Promise<void> {
-    await this.dynamoRepository.send(
-      new DeleteCommand({ TableName: this.tableName, Key: { id } })
-    );
+    await this.dynamoRepository.send(new DeleteCommand({ TableName: this.tableName, Key: { id } }));
   }
 }

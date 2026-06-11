@@ -30,9 +30,7 @@ export class UploadController {
       },
     },
   })
-  async uploadImage(
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<{ url: string }> {
+  async uploadImage(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }

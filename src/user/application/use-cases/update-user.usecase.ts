@@ -17,7 +17,7 @@ export class UpdateUserUseCase {
     private readonly storeRepository: StoreRepository,
     @Inject(STORE_USER_REPOSITORY_TOKEN)
     private readonly storeUserRepository: StoreUserRepository,
-  ) { }
+  ) {}
 
   async execute(id: string, dto: Partial<User>): Promise<User> {
     const oldUser = await this.userRepository.findById(id);
@@ -32,9 +32,9 @@ export class UpdateUserUseCase {
     const newStoreIds = updatedUser.store_ids || [];
 
     // Remove StoreUser entries for stores no longer associated
-    const removedStores = oldStoreIds.filter(sid => !newStoreIds.includes(sid));
+    const removedStores = oldStoreIds.filter((sid) => !newStoreIds.includes(sid));
     for (const storeId of removedStores) {
-      await this.storeUserRepository.delete(storeId, updatedUser.id!);
+      await this.storeUserRepository.delete(storeId, updatedUser.id);
       // Update collaborator count after removal
       const remaining = await this.storeUserRepository.findByStoreId(storeId);
       await this.storeRepository.update(storeId, {
@@ -47,7 +47,7 @@ export class UpdateUserUseCase {
       await this.storeUserRepository.create(
         new StoreUser({
           store_id: storeId,
-          user_id: updatedUser.id!,
+          user_id: updatedUser.id,
           name: updatedUser.name,
           avatar: updatedUser.avatar,
           is_verify: updatedUser.is_verify ?? false,
@@ -55,7 +55,7 @@ export class UpdateUserUseCase {
           gender: updatedUser.gender,
           birth_date: updatedUser.birth_date,
           occupation: updatedUser.occupation,
-        })
+        }),
       );
       // Update collaborator count after upsert
       const storeUsers = await this.storeUserRepository.findByStoreId(storeId);
