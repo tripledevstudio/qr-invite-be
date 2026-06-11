@@ -5,7 +5,7 @@ export class Admin {
   id?: string;
 
   @ApiProperty()
-  user_name: string;
+  user_name!: string;
 
   @ApiPropertyOptional()
   email?: string;
@@ -14,7 +14,7 @@ export class Admin {
   phone_number?: string;
 
   @ApiProperty()
-  password: string;
+  password!: string;
 
   @ApiProperty({ description: 'List of Store IDs this admin belongs to' })
   store_ids?: string[];

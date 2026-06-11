@@ -8,8 +8,8 @@ export class ResetPasswordDto {
   phone_number?: string;
 
   @ApiProperty()
-  otp: string;
+  otp!: string;
 
   @ApiProperty()
-  new_password: string;
+  new_password!: string;
 }

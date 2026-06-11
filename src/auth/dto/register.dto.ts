@@ -4,7 +4,7 @@ import { UserRank, UserRole, UserGender } from '../../user/domain/entities/user.
 
 export class RegisterDto {
   @ApiProperty()
-  name: string;
+  name!: string;
 
   @ApiPropertyOptional()
   user_name?: string;
@@ -16,7 +16,7 @@ export class RegisterDto {
   phone_number?: string;
 
   @ApiProperty()
-  password: string;
+  password!: string;
 
   @ApiPropertyOptional()
   ref_code?: string;

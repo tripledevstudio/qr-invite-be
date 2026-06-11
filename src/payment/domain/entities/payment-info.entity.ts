@@ -1,5 +1,5 @@
 export class PaymentInfo {
-  id: string; // userId is stored in id
+  id!: string; // userId is stored in id
   bank_code?: string;
   account_number?: string;
   account_holder_name?: string;
@@ -8,8 +8,8 @@ export class PaymentInfo {
   updated_at: string;
 
   constructor(partial: Partial<PaymentInfo>) {
+    this.created_at = new Date().toISOString();
+    this.updated_at = new Date().toISOString();
     Object.assign(this, partial);
-    if (!this.created_at) this.created_at = new Date().toISOString();
-    if (!this.updated_at) this.updated_at = new Date().toISOString();
   }
 }

@@ -8,7 +8,7 @@ export class CheckInDto {
   @ApiProperty({ name: 'user_id', description: 'Identifier of the user performing the check‑in' })
   @IsString()
   @IsNotEmpty()
-  readonly user_id: string;
+  readonly user_id!: string;
 
   @ApiProperty({
     name: 'store_id',
@@ -16,5 +16,5 @@ export class CheckInDto {
   })
   @IsString()
   @IsNotEmpty()
-  readonly store_id: string;
+  readonly store_id!: string;
 }

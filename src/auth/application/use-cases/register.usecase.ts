@@ -1,5 +1,4 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { RegisterDto } from '../../dto/register.dto';
@@ -9,20 +8,15 @@ import { Request, RequestType } from '../../../request/domain/entities/request.e
 import { USER_REPOSITORY_TOKEN } from '../../../user/domain/repositories/user.repository';
 import type { UserRepository } from '../../../user/domain/repositories/user.repository';
 import { User } from '../../../user/domain/entities/user.entity';
-import { STORE_REPOSITORY_TOKEN } from '../../../store/domain/repositories/store.repository';
-import type { StoreRepository } from '../../../store/domain/repositories/store.repository';
 
 @Injectable()
 export class RegisterUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
-    @Inject(STORE_REPOSITORY_TOKEN)
-    private readonly storeRepository: StoreRepository,
     @Inject(REQUEST_REPOSITORY_TOKEN)
     private readonly requestRepository: RequestRepository,
-    private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async execute(registerDto: RegisterDto) {
     const { email, phone_number, password, ...rest } = registerDto;

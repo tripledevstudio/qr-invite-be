@@ -16,10 +16,10 @@ import {
 
 @Injectable()
 export class DynamoDBService implements OnModuleInit {
-  private client: DynamoDBClient;
-  private docClient: DynamoDBDocumentClient;
+  private client!: DynamoDBClient;
+  private docClient!: DynamoDBDocumentClient;
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) { }
 
   async onModuleInit() {
     const region = this.configService.get<string>('database.awsRegion');

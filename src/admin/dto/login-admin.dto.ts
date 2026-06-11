@@ -9,5 +9,5 @@ export class LoginAdminDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  password: string;
+  password!: string;
 }

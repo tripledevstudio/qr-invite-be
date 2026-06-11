@@ -16,7 +16,7 @@ import { ADMIN_TABLE_NAME } from '../../../dynamo/constants';
 export class DynamoAdminRepository implements AdminRepository {
   private readonly tableName = ADMIN_TABLE_NAME;
 
-  constructor(private readonly dynamoRepository: DynamoRepository) {}
+  constructor(private readonly dynamoRepository: DynamoRepository) { }
 
   async create(admin: Admin): Promise<Admin> {
     const item = { ...admin, id: admin.id ?? randomUUID() };
@@ -81,7 +81,7 @@ export class DynamoAdminRepository implements AdminRepository {
       return (await this.findById(id)) as Admin;
     }
 
-    const updateExpressions = keys.map((key, i) => `#k${i} = :v${i}`).join(', ');
+    const updateExpressions = keys.map((_key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 

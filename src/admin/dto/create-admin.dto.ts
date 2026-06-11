@@ -5,7 +5,7 @@ export class CreateAdminDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  user_name: string;
+  user_name!: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -20,7 +20,7 @@ export class CreateAdminDto {
   @ApiProperty()
   @IsNotEmpty()
   @Length(6, 32)
-  password: string;
+  password!: string;
 
   @ApiPropertyOptional({ type: [String], description: 'List of Store IDs this admin belongs to' })
   @IsOptional()
