@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-  Inject,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAdminDto } from '../../dto/login-admin.dto';
@@ -27,7 +22,7 @@ export class LoginAdminUseCase {
     }
 
     let admin: Admin | null = null;
-    
+
     if (user_name) {
       admin = await this.adminRepository.findByUserName(user_name.trim().toUpperCase());
     }
@@ -45,7 +40,7 @@ export class LoginAdminUseCase {
       sub: admin.id,
       user_name: admin.user_name,
       role: 'ADMIN',
-      store_id: admin.store_id,
+      store_id: admin.current_store_id,
     };
 
     const token = this.jwtService.sign(payload, {

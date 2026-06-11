@@ -6,7 +6,7 @@ import { GetServiceUseCase } from './application/use-cases/get-service.usecase';
 import { ListServicesUseCase } from './application/use-cases/list-services.usecase';
 import { DeleteServiceUseCase } from './application/use-cases/delete-service.usecase';
 import { DynamoServiceRepository } from './infrastructure/dynamo/dynamo-service.repository';
-import { ServiceRepository, SERVICE_REPOSITORY_TOKEN } from './domain/repositories/service.repository';
+import { SERVICE_REPOSITORY_TOKEN } from './domain/repositories/service.repository';
 import { DynamoModule } from '../dynamo/dynamo.module';
 
 @Module({
@@ -22,6 +22,6 @@ import { DynamoModule } from '../dynamo/dynamo.module';
     GetServiceUseCase,
     ListServicesUseCase,
     DeleteServiceUseCase,
-  ],
+  ]
 })
 export class ServiceModule {}

@@ -13,7 +13,8 @@ export class CreateAdminUseCase {
   ) {}
 
   async execute(createDto: CreateAdminDto) {
-    const { user_name, email, phone_number, password, store_id } = createDto;
+    const { email, phone_number, password, store_ids } = createDto;
+    const user_name = createDto.user_name?.trim().toUpperCase();
 
     if (!user_name) {
       throw new BadRequestException('User name is required');
@@ -38,7 +39,8 @@ export class CreateAdminUseCase {
     admin.email = email;
     admin.phone_number = phone_number;
     admin.password = hashedPassword;
-    admin.store_id = store_id;
+    admin.store_ids = store_ids;
+    admin.current_store_id = store_ids && store_ids.length > 0 ? store_ids[0] : undefined;
 
     return this.adminRepository.create(admin);
   }

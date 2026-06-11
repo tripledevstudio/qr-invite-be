@@ -7,7 +7,7 @@ import { UpdatePaymentInfoDto } from '../../dto/update-payment-info.dto';
 export class UpdatePaymentInfoUseCase {
   constructor(
     @Inject(PAYMENT_INFO_REPOSITORY_TOKEN)
-    private readonly repo: PaymentInfoRepository,
+    private readonly repo: PaymentInfoRepository
   ) {}
 
   async execute(userId: string, dto: UpdatePaymentInfoDto) {

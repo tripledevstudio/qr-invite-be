@@ -28,16 +28,12 @@ export class DynamoServiceRepository implements ServiceRepository {
       created_at: now,
       updated_at: now,
     };
-    await this.dynamoRepository.send(
-      new PutCommand({ TableName: this.tableName, Item: item }),
-    );
+    await this.dynamoRepository.send(new PutCommand({ TableName: this.tableName, Item: item }));
     return item;
   }
 
   async findAll(): Promise<Service[]> {
-    const result = await this.dynamoRepository.send(
-      new ScanCommand({ TableName: this.tableName }),
-    );
+    const result = await this.dynamoRepository.send(new ScanCommand({ TableName: this.tableName }));
     return (result.Items ?? []) as Service[];
   }
 
@@ -58,9 +54,7 @@ export class DynamoServiceRepository implements ServiceRepository {
       return this.findOne(id);
     }
 
-    const updateExpressions = keys
-      .map((key, i) => `#k${i} = :v${i}`)
-      .join(', ');
+    const updateExpressions = keys.map((_key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 
@@ -82,16 +76,14 @@ export class DynamoServiceRepository implements ServiceRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      }),
+      })
     );
 
     return this.findOne(id);
   }
 
   async remove(id: string): Promise<{ deleted: true }> {
-    await this.dynamoRepository.send(
-      new DeleteCommand({ TableName: this.tableName, Key: { id } }),
-    );
+    await this.dynamoRepository.send(new DeleteCommand({ TableName: this.tableName, Key: { id } }));
     return { deleted: true };
   }
 }

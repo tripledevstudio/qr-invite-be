@@ -1,9 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import {
-  DynamoDBClient,
-  DescribeTableCommand,
-  CreateTableCommand,
-} from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, DescribeTableCommand, CreateTableCommand } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -23,23 +19,19 @@ export class DynamoDBService implements OnModuleInit {
   private client: DynamoDBClient;
   private docClient: DynamoDBDocumentClient;
 
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
 
   async onModuleInit() {
     const region = this.configService.get<string>('database.awsRegion');
-    const accessKeyId = this.configService.get<string>(
-      'database.awsAccessKeyId',
-    );
-    const secretAccessKey = this.configService.get<string>(
-      'database.awsSecretAccessKey',
-    );
+    const accessKeyId = this.configService.get<string>('database.awsAccessKeyId');
+    const secretAccessKey = this.configService.get<string>('database.awsSecretAccessKey');
 
     this.client = new DynamoDBClient({
       region: region || 'ap-southeast-1',
       credentials: {
         accessKeyId: accessKeyId || '',
         secretAccessKey: secretAccessKey || '',
-      },
+      }
     });
 
     this.docClient = DynamoDBDocumentClient.from(this.client);
@@ -62,14 +54,9 @@ export class DynamoDBService implements OnModuleInit {
 
     for (const tableName of tables) {
       try {
-        await this.client.send(
-          new DescribeTableCommand({ TableName: tableName }),
-        );
+        await this.client.send(new DescribeTableCommand({ TableName: tableName }));
       } catch (err: any) {
-        if (
-          err.name === 'ResourceNotFoundException' ||
-          err.$metadata?.httpStatusCode === 404
-        ) {
+        if (err.name === 'ResourceNotFoundException' || err.$metadata?.httpStatusCode === 404) {
           if (tableName === 'StoreUsers') {
             await this.client.send(
               new CreateTableCommand({
@@ -83,7 +70,7 @@ export class DynamoDBService implements OnModuleInit {
                   { AttributeName: 'user_id', KeyType: 'RANGE' }
                 ],
                 BillingMode: 'PAY_PER_REQUEST',
-              }),
+              })
             );
           } else {
             // Default schema with 'id' as Partition Key for auto-provisioning
@@ -93,7 +80,7 @@ export class DynamoDBService implements OnModuleInit {
                 AttributeDefinitions: [{ AttributeName: 'id', AttributeType: 'S' }],
                 KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
                 BillingMode: 'PAY_PER_REQUEST',
-              }),
+              })
             );
           }
         } else {

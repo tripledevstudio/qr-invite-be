@@ -5,9 +5,10 @@ import { Store } from '../../domain/entities/store.entity';
 
 @Injectable()
 export class ListStoresUseCase {
-  constructor(@Inject(STORE_REPOSITORY_TOKEN) private readonly storeRepo: StoreRepository) {}
+  constructor(@Inject(STORE_REPOSITORY_TOKEN) private readonly storeRepo: StoreRepository) { }
 
-  async execute(): Promise<Store[]> {
-    return this.storeRepo.findAll();
+  async execute(adminId: string): Promise<Store[]> {
+    const stores = await this.storeRepo.findAll();
+    return stores.filter(store => store.user_id === adminId);
   }
 }

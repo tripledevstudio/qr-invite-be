@@ -23,8 +23,8 @@ import { ListStoreUsersUseCase } from './application/use-cases/list-store-users.
     GetStoreUseCase,
     UpdateStoreUseCase,
     DeleteStoreUseCase,
-    ListStoreUsersUseCase,
+    ListStoreUsersUseCase
   ],
-  exports: [STORE_REPOSITORY_TOKEN, STORE_USER_REPOSITORY_TOKEN],
+  exports: [STORE_REPOSITORY_TOKEN, STORE_USER_REPOSITORY_TOKEN]
 })
-export class StoreModule { }
+export class StoreModule {}

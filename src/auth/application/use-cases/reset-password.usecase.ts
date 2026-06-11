@@ -9,7 +9,7 @@ import { User } from '../../../user/domain/entities/user.entity';
 export class ResetPasswordUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
-    private readonly userRepository: UserRepository,
+    private readonly userRepository: UserRepository
   ) {}
 
   async execute(resetPasswordDto: ResetPasswordDto) {
@@ -43,10 +43,10 @@ export class ResetPasswordUseCase {
 
     const hashedPassword = await bcrypt.hash(new_password, 10);
 
-    await this.userRepository.update(user.id!, {
+    await this.userRepository.update(user.id, {
       password: hashedPassword,
       forgot_password_otp: '',
-      forgot_password_otp_expires_at: '',
+      forgot_password_otp_expires_at: ''
     });
 
     return { message: 'Password reset successfully' };

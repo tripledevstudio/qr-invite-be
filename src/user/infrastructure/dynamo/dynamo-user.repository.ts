@@ -20,9 +20,7 @@ export class DynamoUserRepository implements UserRepository {
 
   async create(user: User): Promise<User> {
     const item = { ...user, id: user.id ?? randomUUID() };
-    await this.dynamoRepository.send(
-      new PutCommand({ TableName: this.tableName, Item: item })
-    );
+    await this.dynamoRepository.send(new PutCommand({ TableName: this.tableName, Item: item }));
     return item;
   }
 
@@ -71,11 +69,12 @@ export class DynamoUserRepository implements UserRepository {
     const result = await this.dynamoRepository.send(
       new ScanCommand({
         TableName: this.tableName,
-        FilterExpression: 'invite_code = :invite AND (attribute_not_exists(deleted_at) OR deleted_at = :null_val)',
-        ExpressionAttributeValues: { 
+        FilterExpression:
+          'invite_code = :invite AND (attribute_not_exists(deleted_at) OR deleted_at = :null_val)',
+        ExpressionAttributeValues: {
           ':invite': inviteCode,
           ':null_val': null
-        },
+        }
       })
     );
     return (result.Items?.[0] as User) ?? null;
@@ -87,9 +86,7 @@ export class DynamoUserRepository implements UserRepository {
       return (await this.findById(id)) as User;
     }
 
-    const updateExpressions = keys
-      .map((key, i) => `#k${i} = :v${i}`)
-      .join(', ');
+    const updateExpressions = keys.map((_key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 
@@ -113,8 +110,6 @@ export class DynamoUserRepository implements UserRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await this.dynamoRepository.send(
-      new DeleteCommand({ TableName: this.tableName, Key: { id } })
-    );
+    await this.dynamoRepository.send(new DeleteCommand({ TableName: this.tableName, Key: { id } }));
   }
 }

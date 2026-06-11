@@ -11,7 +11,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { CHECK_IN_TABLE_NAME } from '../../../dynamo/constants';
 import { CheckInDto } from '../../dto/check-in.dto';
-import { CheckInFilterDto } from '../../dto/check-in-filter.dto';
+/* Import of CheckInFilterDto removed – filter is typed as any */
 import { CheckIn } from '../../domain/entities/check-in.entity';
 
 @Injectable()
@@ -20,16 +20,13 @@ export class DynamoCheckInRepository implements CheckInRepository {
 
   constructor(private readonly dynamoRepository: DynamoRepository) {}
 
-  async checkIn(dto: CheckInDto): Promise<CheckIn> {
+  async checkIn(dto: any): Promise<CheckIn> {
     const item: CheckIn = {
-      id: randomUUID(),
-      user_id: dto.user_id,
-      store_id: dto.store_id,
-      timestamp: new Date().toISOString(),
+      ...dto,
+      id: dto.id ?? randomUUID(),
+      timestamp: dto.timestamp ?? new Date().toISOString(),
     };
-    await this.dynamoRepository.send(
-      new PutCommand({ TableName: this.tableName, Item: item }),
-    );
+    await this.dynamoRepository.send(new PutCommand({ TableName: this.tableName, Item: item }));
     return item;
   }
 
@@ -40,19 +37,18 @@ export class DynamoCheckInRepository implements CheckInRepository {
     return result.Item as CheckIn;
   }
 
-  async getLogs(filter: CheckInFilterDto): Promise<CheckIn[]> {
-    const result = await this.dynamoRepository.send(
-      new ScanCommand({ TableName: this.tableName }),
-    );
+  async getLogs(filter: any): Promise<CheckIn[]> {
+    const result = await this.dynamoRepository.send(new ScanCommand({ TableName: this.tableName }));
     const records = (result.Items ?? []) as CheckIn[];
 
     const { user_id, store_id, from, to } = filter;
     const fromDate = from ? new Date(from) : undefined;
     const toDate = to ? new Date(to) : undefined;
 
-    return records.filter(rec => {
+    return records.filter((rec) => {
       if (user_id && rec.user_id !== user_id) return false;
       if (store_id && rec.store_id !== store_id) return false;
+      if (!rec.timestamp) return false;
       const recDate = new Date(rec.timestamp);
       if (fromDate && recDate < fromDate) return false;
       if (toDate && recDate > toDate) return false;
@@ -66,9 +62,7 @@ export class DynamoCheckInRepository implements CheckInRepository {
       return this.findOne(id);
     }
 
-    const updateExpressions = keys
-      .map((key, i) => `#k${i} = :v${i}`)
-      .join(', ');
+    const updateExpressions = keys.map((key, i) => `#k${i} = :v${i}`).join(', ');
     const expressionAttributeNames: Record<string, string> = {};
     const expressionAttributeValues: Record<string, any> = {};
 
@@ -86,16 +80,14 @@ export class DynamoCheckInRepository implements CheckInRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      }),
+      })
     );
 
     return this.findOne(id);
   }
 
   async remove(id: string): Promise<{ deleted: boolean }> {
-    await this.dynamoRepository.send(
-      new DeleteCommand({ TableName: this.tableName, Key: { id } }),
-    );
+    await this.dynamoRepository.send(new DeleteCommand({ TableName: this.tableName, Key: { id } }));
     return { deleted: true };
   }
 }

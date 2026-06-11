@@ -4,13 +4,13 @@ import { UserRank, UserRole, UserGender } from '../domain/entities/user.entity';
 
 export class CreateUserDto {
   @ApiProperty()
-  name: string;
+  name!: string;
 
   @ApiPropertyOptional()
   user_name?: string;
 
   @ApiProperty()
-  email: string;
+  email!: string;
 
   @ApiPropertyOptional()
   phone_number?: string;

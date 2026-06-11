@@ -4,9 +4,7 @@ import { SERVICE_REPOSITORY_TOKEN } from '../../domain/repositories/service.repo
 
 @Injectable()
 export class DeleteServiceUseCase {
-  constructor(
-    @Inject(SERVICE_REPOSITORY_TOKEN) private readonly repository: ServiceRepository,
-  ) {}
+  constructor(@Inject(SERVICE_REPOSITORY_TOKEN) private readonly repository: ServiceRepository) {}
 
   async execute(id: string): Promise<{ deleted: boolean }> {
     return this.repository.remove(id);

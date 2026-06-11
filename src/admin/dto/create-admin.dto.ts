@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, IsArray } from 'class-validator';
 
 export class CreateAdminDto {
   @ApiProperty()
@@ -22,8 +22,9 @@ export class CreateAdminDto {
   @Length(6, 32)
   password: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  store_id: string;
+  @ApiPropertyOptional({ type: [String], description: 'List of Store IDs this admin belongs to' })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  store_ids?: string[];
 }

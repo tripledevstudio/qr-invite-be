@@ -14,7 +14,7 @@ export class ForgotPasswordUseCase {
 
   async execute(forgotPasswordDto: ForgotPasswordDto) {
     const { email, phone_number } = forgotPasswordDto;
-    
+
     if (!email && !phone_number) {
       throw new BadRequestException('Email or phone number is required');
     }
@@ -37,7 +37,7 @@ export class ForgotPasswordUseCase {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
 
-    await this.userRepository.update(user.id!, {
+    await this.userRepository.update(user.id, {
       forgot_password_otp: otp,
       forgot_password_otp_expires_at: expiresAt,
     });
@@ -95,7 +95,7 @@ export class ForgotPasswordUseCase {
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
-      },
+      }
     });
   }
 }

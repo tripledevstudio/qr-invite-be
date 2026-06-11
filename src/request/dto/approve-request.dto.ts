@@ -1,4 +1,4 @@
 export class ApproveRequestDto {
-  request_id: string;
-  approved: boolean;
+  request_id!: string;
+  approved!: boolean;
 }

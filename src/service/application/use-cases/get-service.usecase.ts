@@ -5,9 +5,7 @@ import { Service } from '../../domain/entities/service.entity';
 
 @Injectable()
 export class GetServiceUseCase {
-  constructor(
-    @Inject(SERVICE_REPOSITORY_TOKEN) private readonly repository: ServiceRepository,
-  ) {}
+  constructor(@Inject(SERVICE_REPOSITORY_TOKEN) private readonly repository: ServiceRepository) {}
 
   async execute(id: string): Promise<Service> {
     const service = await this.repository.findOne(id);

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
- 
+
 import { DynamoModule } from '../dynamo/dynamo.module';
 import { PaymentModule } from '../payment/payment.module';
 import { StoreModule } from '../store/store.module';
@@ -20,9 +20,9 @@ import { GetUserByInviteCodeUseCase } from './application/use-cases/get-user-by-
     GetUserUseCase,
     UpdateUserUseCase,
     DeleteUserUseCase,
-    GetUserByInviteCodeUseCase,
+    GetUserByInviteCodeUseCase
   ],
   controllers: [UserController],
-  exports: [USER_REPOSITORY_TOKEN],
+  exports: [USER_REPOSITORY_TOKEN]
 })
 export class UserModule {}

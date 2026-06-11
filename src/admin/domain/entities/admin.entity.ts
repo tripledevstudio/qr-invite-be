@@ -16,6 +16,8 @@ export class Admin {
   @ApiProperty()
   password: string;
 
-  @ApiProperty({ description: 'Store ID this admin belongs to' })
-  store_id: string;
+  @ApiProperty({ description: 'List of Store IDs this admin belongs to' })
+  store_ids?: string[];
+  @ApiPropertyOptional({ description: 'The currently active Store ID for this admin' })
+  current_store_id?: string;
 }

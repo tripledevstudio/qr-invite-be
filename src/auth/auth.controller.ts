@@ -33,8 +33,8 @@ export class AuthController {
     private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
     private readonly verifyForgotPasswordOtpUseCase: VerifyForgotPasswordOtpUseCase,
     private readonly resetPasswordUseCase: ResetPasswordUseCase,
-    private readonly changeStoreUseCase: ChangeStoreUseCase,
-  ) { }
+    private readonly changeStoreUseCase: ChangeStoreUseCase
+  ) {}
 
   @Post('register')
   register(@Body() registerDto: RegisterDto) {

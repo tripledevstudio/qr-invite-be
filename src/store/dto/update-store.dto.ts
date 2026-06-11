@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, IsNumber, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 
 export class UpdateStoreDto {
   @ApiPropertyOptional({ description: 'Name of the store', example: 'VinMart Central Park' })
@@ -7,7 +7,10 @@ export class UpdateStoreDto {
   @IsOptional()
   readonly name?: string;
 
-  @ApiPropertyOptional({ description: 'Store address', example: '720A Dien Bien Phu, Binh Thanh, HCMC' })
+  @ApiPropertyOptional({
+    description: 'Store address',
+    example: '720A Dien Bien Phu, Binh Thanh, HCMC',
+  })
   @IsString()
   @IsOptional()
   readonly address?: string;
@@ -36,5 +39,4 @@ export class UpdateStoreDto {
   @IsNumber()
   @IsOptional()
   readonly monthly_revenue?: number;
-
 }

@@ -11,7 +11,7 @@ export class PaginationDto {
   @ApiProperty({
     description: 'Current page number (starts at 1)',
     example: 1,
-    default: 1,
+    default: 1
   })
   @Type(() => Number)
   @IsInt()
@@ -23,7 +23,7 @@ export class PaginationDto {
     example: 10,
     default: 10,
     minimum: 1,
-    maximum: 100,
+    maximum: 100
   })
   @Type(() => Number)
   @IsInt()

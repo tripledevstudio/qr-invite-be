@@ -1,19 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  IsNumber,
-  IsArray,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateStoreDto {
   @ApiProperty({ description: 'Name of the store', example: 'VinMart Landmark 81' })
   @IsString()
   @IsNotEmpty()
-  readonly name: string;
+  readonly name!: string;
 
-  @ApiPropertyOptional({ description: 'Store address', example: '208 Nguyen Huu Canh, Binh Thanh, HCMC' })
+  @ApiPropertyOptional({
+    description: 'Store address',
+    example: '208 Nguyen Huu Canh, Binh Thanh, HCMC',
+  })
   @IsString()
   @IsOptional()
   readonly address?: string;
@@ -42,5 +39,4 @@ export class CreateStoreDto {
   @IsNumber()
   @IsOptional()
   readonly monthly_revenue?: number;
-
 }

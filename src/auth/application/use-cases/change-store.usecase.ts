@@ -8,8 +8,8 @@ export class ChangeStoreUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
-    private readonly jwtService: JwtService,
-  ) { }
+    private readonly jwtService: JwtService
+  ) {}
 
   async execute(user_id: string, newStoreId: string) {
     const user = await this.userRepository.findById(user_id);
@@ -32,23 +32,25 @@ export class ChangeStoreUseCase {
       email: user.email,
       phone_number: user.phone_number,
       role: user.role,
-      store_id: user.current_store_id,
+      store_id: user.current_store_id
     };
 
     // Clean undefined values
     Object.keys(payload).forEach(
-      (key) => payload[key as keyof typeof payload] === undefined && delete payload[key as keyof typeof payload]
+      (key) =>
+        payload[key as keyof typeof payload] === undefined &&
+        delete payload[key as keyof typeof payload],
     );
 
     return {
       message: 'Success',
       access_token: this.jwtService.sign(payload, {
         secret: process.env.JWT_SECRET || 'secretKey',
-        expiresIn: '1h',
+        expiresIn: '1h'
       }),
       refresh_token: this.jwtService.sign(payload, {
         secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
-        expiresIn: '7d',
+        expiresIn: '7d'
       }),
     };
   }

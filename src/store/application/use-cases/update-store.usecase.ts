@@ -6,9 +6,9 @@ import { Store } from '../../domain/entities/store.entity';
 
 @Injectable()
 export class UpdateStoreUseCase {
-  constructor(@Inject(STORE_REPOSITORY_TOKEN) private readonly storeRepo: StoreRepository) {}
+  constructor(@Inject(STORE_REPOSITORY_TOKEN) private readonly storeRepo: StoreRepository) { }
 
-  async execute(id: string, dto: UpdateStoreDto): Promise<Store> {
-    return this.storeRepo.update(id, dto);
+  async execute(id: string, dto: UpdateStoreDto, adminId: string): Promise<Store> {
+    return this.storeRepo.update(id, { ...dto, user_id: adminId });
   }
 }

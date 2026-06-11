@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DynamoRepository } from '../../../dynamo/dynamo.repository';
 import { PointHistory } from '../../domain/entities/point-history.entity';
 import { PointHistoryRepository } from '../../domain/repositories/point-history.repository';
-import {
-  PutCommand,
-  GetCommand,
-  ScanCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { PutCommand, GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { randomUUID } from 'crypto';
 import { POINT_HISTORY_TABLE_NAME } from '../../../dynamo/constants';
 
@@ -14,10 +10,14 @@ import { POINT_HISTORY_TABLE_NAME } from '../../../dynamo/constants';
 export class DynamoPointHistoryRepository implements PointHistoryRepository {
   private readonly tableName = POINT_HISTORY_TABLE_NAME;
 
-  constructor(private readonly dynamoRepository: DynamoRepository) { }
+  constructor(private readonly dynamoRepository: DynamoRepository) {}
 
   async create(history: PointHistory): Promise<PointHistory> {
-    const item = { ...history, id: history.id ?? randomUUID(), created_at: new Date() };
+    const item = {
+      ...history,
+      id: history.id ?? randomUUID(),
+      created_at: new Date().toISOString(),
+    };
     await this.dynamoRepository.send(new PutCommand({ TableName: this.tableName, Item: item }));
     return item;
   }

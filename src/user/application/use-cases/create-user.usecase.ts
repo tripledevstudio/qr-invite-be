@@ -3,17 +3,13 @@ import { User } from '../../domain/entities/user.entity';
 import type { UserRepository } from '../../domain/repositories/user.repository';
 import { USER_REPOSITORY_TOKEN } from '../../domain/repositories/user.repository';
 import { CreateUserDto } from '../../dto/create-user.dto';
-import { STORE_REPOSITORY_TOKEN } from '../../../store/domain/repositories/store.repository';
-import type { StoreRepository } from '../../../store/domain/repositories/store.repository';
 
 @Injectable()
 export class CreateUserUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
-    private readonly userRepository: UserRepository,
-    @Inject(STORE_REPOSITORY_TOKEN)
-    private readonly storeRepository: StoreRepository,
-  ) { }
+    private readonly userRepository: UserRepository
+  ) {}
 
   async execute(dto: CreateUserDto): Promise<User> {
     const user = new User({

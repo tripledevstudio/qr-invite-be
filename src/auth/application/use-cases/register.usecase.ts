@@ -21,12 +21,13 @@ export class RegisterUseCase {
     private readonly storeRepository: StoreRepository,
     @Inject(REQUEST_REPOSITORY_TOKEN)
     private readonly requestRepository: RequestRepository,
-    private readonly jwtService: JwtService,
-  ) { }
+    private readonly jwtService: JwtService
+  ) {}
 
   async execute(registerDto: RegisterDto) {
     const { email, phone_number, password, ...rest } = registerDto;
-    const storeId = (registerDto as any).store_id ||
+    const storeId =
+      (registerDto as any).store_id ||
       ((registerDto as any).store_ids && (registerDto as any).store_ids.length > 0
         ? (registerDto as any).store_ids[0]
         : undefined);
@@ -42,8 +43,7 @@ export class RegisterUseCase {
 
     if (phone_number) {
       const existingUser = await this.userRepository.findByPhone(phone_number);
-      if (existingUser)
-        throw new BadRequestException('Phone number already exists');
+      if (existingUser) throw new BadRequestException('Phone number already exists');
     }
 
     // Check for duplicate user_name if provided
@@ -76,7 +76,9 @@ export class RegisterUseCase {
 
     const userStoreIds = (registerDto as any).store_ids
       ? (registerDto as any).store_ids
-      : (storeId ? [storeId] : undefined);
+      : storeId
+        ? [storeId]
+        : undefined;
 
     const user = new User({
       ...rest,
@@ -85,16 +87,16 @@ export class RegisterUseCase {
       password: hashedPassword,
       invite_code: inviteCode,
       is_verify: false,
-      ...(userStoreIds ? { store_ids: userStoreIds } : {}),
+      ...(userStoreIds ? { store_ids: userStoreIds } : {})
     });
 
     const createdUser = await this.userRepository.create(user);
     await this.requestRepository.create(
       new Request({
-        user_id: createdUser.id!,
+        user_id: createdUser.id,
         type: RequestType.REGISTER,
-        ...(storeId ? { store_id: storeId } : {}),
-      })
+        ...(storeId ? { store_id: storeId } : {})
+      }),
     );
 
     return { message: 'User registered successfully. Please wait for admin approval.' };

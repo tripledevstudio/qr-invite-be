@@ -20,26 +20,26 @@ import { RequestModule } from '../request/request.module';
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secretKey',
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '1h' }
     }),
     UserModule,
     StoreModule,
-    RequestModule,
+    RequestModule
   ],
   providers: [
-  RegisterUseCase,
-  LoginUseCase,
-  LogoutUseCase,
-  RefreshTokenUseCase,
-  VerifyEmailUseCase,
-  ForgotPasswordUseCase,
-  VerifyForgotPasswordOtpUseCase,
-  ResetPasswordUseCase,
-  ChangeStoreUseCase,
-  JwtStrategy,
-  JwtAuthGuard,
-],
+    RegisterUseCase,
+    LoginUseCase,
+    LogoutUseCase,
+    RefreshTokenUseCase,
+    VerifyEmailUseCase,
+    ForgotPasswordUseCase,
+    VerifyForgotPasswordOtpUseCase,
+    ResetPasswordUseCase,
+    ChangeStoreUseCase,
+    JwtStrategy,
+    JwtAuthGuard,
+  ],
   controllers: [AuthController],
-  exports: [JwtAuthGuard],
+  exports: [JwtAuthGuard]
 })
 export class AuthModule {}

@@ -9,7 +9,7 @@ export class UploadService {
     cloudinary.config({
       cloud_name: this.configService.get<string>('CLOUDINARY_CLOUD_NAME'),
       api_key: this.configService.get<string>('CLOUDINARY_API_KEY'),
-      api_secret: this.configService.get<string>('CLOUDINARY_API_SECRET'),
+      api_secret: this.configService.get<string>('CLOUDINARY_API_SECRET')
     });
   }
 
@@ -20,12 +20,9 @@ export class UploadService {
         .upload_stream(
           {
             resource_type: 'image',
-            format: 'webp',
+            format: 'webp'
           },
-          (
-            error: UploadApiErrorResponse | undefined,
-            result: UploadApiResponse | undefined,
-          ) => {
+          (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
             if (error) {
               return reject(error);
             }
@@ -33,7 +30,7 @@ export class UploadService {
               return reject(new Error('Unknown error during upload'));
             }
             resolve(result.secure_url);
-          },
+          }
         )
         .end(file.buffer);
     });
@@ -42,7 +39,7 @@ export class UploadService {
   // Xử lý upload base64
   async uploadBase64(base64String: string): Promise<string> {
     const result = await cloudinary.uploader.upload(base64String, {
-      resource_type: 'image',
+      resource_type: 'image'
     });
     return result.secure_url;
   }

@@ -12,7 +12,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class PaymentController {
   constructor(
     private readonly getPaymentInfoUseCase: GetPaymentInfoUseCase,
-    private readonly updatePaymentInfoUseCase: UpdatePaymentInfoUseCase,
+    private readonly updatePaymentInfoUseCase: UpdatePaymentInfoUseCase
   ) {}
 
   @Get()

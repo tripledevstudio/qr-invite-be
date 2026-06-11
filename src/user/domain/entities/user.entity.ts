@@ -16,17 +16,17 @@ export enum UserGender {
 }
 
 export class User {
-  id: string;
-  name: string;
+  id!: string;
+  name!: string;
   user_name?: string;
-  email: string;
+  email?: string | null;
   phone_number?: string;
   password?: string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
+  is_active!: boolean;
+  created_at!: string;
+  updated_at!: string;
   deleted_at?: string | null;
-  is_verify: boolean;
+  is_verify!: boolean;
   ref_code?: string;
   invite_code?: string;
   rank?: UserRank;
