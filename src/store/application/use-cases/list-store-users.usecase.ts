@@ -12,7 +12,7 @@ export class ListStoreUsersUseCase {
     @Inject(STORE_USER_REPOSITORY_TOKEN)
     private readonly storeUserRepository: StoreUserRepository,
     private readonly paginationService: PaginationService,
-  ) { }
+  ) {}
 
   async execute(storeId: string, query: ListStoreUsersDto): Promise<PaginationResponse<StoreUser>> {
     // Verify store existence could be added, but we assume valid storeId

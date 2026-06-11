@@ -4,7 +4,7 @@ import { RefreshTokenDto } from '../../dto/refresh-token.dto';
 
 @Injectable()
 export class RefreshTokenUseCase {
-  constructor(private readonly jwtService: JwtService) { }
+  constructor(private readonly jwtService: JwtService) {}
 
   async execute(refreshTokenDto: RefreshTokenDto) {
     const { refresh_token } = refreshTokenDto;

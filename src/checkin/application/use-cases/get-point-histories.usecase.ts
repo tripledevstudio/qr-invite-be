@@ -15,7 +15,7 @@ export class GetPointHistoriesUseCase {
     private readonly userRepo: UserRepository,
     @Inject(STORE_REPOSITORY_TOKEN)
     private readonly storeRepo: StoreRepository,
-  ) { }
+  ) {}
 
   async execute(userId: string, storeId?: string): Promise<any[]> {
     const histories = await this.pointHistoryRepo.findByUserId(userId);

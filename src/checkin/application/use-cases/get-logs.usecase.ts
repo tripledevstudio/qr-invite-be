@@ -10,7 +10,7 @@ export class GetLogsUseCase {
   constructor(
     @Inject(CHECK_IN_REPOSITORY_TOKEN) private readonly repo: CheckInRepository,
     @Inject(STORE_REPOSITORY_TOKEN) private readonly storeRepo: StoreRepository,
-  ) { }
+  ) {}
 
   async execute(filter: CheckInFilterDto): Promise<any[]> {
     const logs = await this.repo.getLogs(filter);
