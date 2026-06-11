@@ -103,7 +103,7 @@ export class ApproveRequestUseCase {
       // Log point history
       const history = new PointHistory({
         user_id: user.id,
-        store_id: request.store_id!,
+        store_id: request.store_id,
         amount: -request.amount,
         type: 'WITHDRAWAL',
       });
@@ -112,6 +112,6 @@ export class ApproveRequestUseCase {
     }
 
     // Persist request status change
-    return this.requestRepository.update(request.id!, updates);
+    return this.requestRepository.update(request.id, updates);
   }
 }

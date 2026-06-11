@@ -19,12 +19,15 @@ export class DynamoDBService implements OnModuleInit {
   private client!: DynamoDBClient;
   private docClient!: DynamoDBDocumentClient;
 
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
 
   async onModuleInit() {
     const region = this.configService.get<string>('database.awsRegion') || process.env.AWS_REGION;
-    const accessKeyId = this.configService.get<string>('database.awsAccessKeyId') || process.env.AWS_ACCESS_KEY_ID;
-    const secretAccessKey = this.configService.get<string>('database.awsSecretAccessKey') || process.env.AWS_SECRET_ACCESS_KEY;
+    const accessKeyId =
+      this.configService.get<string>('database.awsAccessKeyId') || process.env.AWS_ACCESS_KEY_ID;
+    const secretAccessKey =
+      this.configService.get<string>('database.awsSecretAccessKey') ||
+      process.env.AWS_SECRET_ACCESS_KEY;
     // LOG RA ĐỂ KIỂM TRA (Vercel sẽ hiển thị cái này trong phần Logs)
     console.log('--- DEBUG AWS CONFIG ---');
     console.log('Region:', region);
