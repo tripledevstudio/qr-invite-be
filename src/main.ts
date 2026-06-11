@@ -48,10 +48,10 @@ async function bootstrap() {
       persistAuthorization: true,
     },
     customCssUrl:
-      'https://qr-invite-be.vercel.app/swagger-ui.css',
+      'https://qr-invite-be.vercel.app/api/swagger-ui.css',
     customJs: [
-      'https://qr-invite-be.vercel.app/swagger-ui-bundle.js',
-      'https://qr-invite-be.vercel.app/swagger-ui-standalone-preset.js',
+      'https://qr-invite-be.vercel.app/api/swagger-ui-bundle.js',
+      'https://qr-invite-be.vercel.app/api/swagger-ui-standalone-preset.js',
     ],
   });
 
