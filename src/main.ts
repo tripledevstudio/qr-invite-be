@@ -47,11 +47,6 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customCssUrl: '/swagger-ui.css',
-    customJs: [
-      '/swagger-ui-bundle.js',
-      '/swagger-ui-standalone-preset.js',
-    ],
   });
 
   app.useGlobalPipes(new ValidationPipe());
