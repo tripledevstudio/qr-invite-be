@@ -8,7 +8,7 @@ import { CreateUserDto } from '../../dto/create-user.dto';
 export class CreateUserUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
   ) {}
 
   async execute(dto: CreateUserDto): Promise<User> {

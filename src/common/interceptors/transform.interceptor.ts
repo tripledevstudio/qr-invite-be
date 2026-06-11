@@ -13,8 +13,8 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
       map((data) => ({
         data,
         statusCode: context.switchToHttp().getResponse().statusCode,
-        timestamp: new Date().toISOString()
-      }))
+        timestamp: new Date().toISOString(),
+      })),
     );
   }
 }

@@ -6,7 +6,7 @@ import {
   Query,
   Req,
   UseGuards,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CheckInUseCase } from './application/use-cases/check-in.usecase';
@@ -29,7 +29,7 @@ export class CheckInController {
     private readonly processCheckInUseCase: ProcessCheckInUseCase,
     private readonly getPointHistoriesUseCase: GetPointHistoriesUseCase,
     private readonly getLogsUseCase: GetLogsUseCase,
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   @Post()
@@ -73,7 +73,7 @@ export class CheckInController {
     const finalFilter = {
       ...filter,
       user_id: userId,
-      store_id: storeId
+      store_id: storeId,
     } as any;
 
     const logs = await this.getLogsUseCase.execute(finalFilter);

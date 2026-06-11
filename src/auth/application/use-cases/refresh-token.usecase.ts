@@ -4,13 +4,13 @@ import { RefreshTokenDto } from '../../dto/refresh-token.dto';
 
 @Injectable()
 export class RefreshTokenUseCase {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService) { }
 
   async execute(refreshTokenDto: RefreshTokenDto) {
     const { refresh_token } = refreshTokenDto;
     try {
       const payload = this.jwtService.verify(refresh_token, {
-        secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey'
+        secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
       });
 
       const newPayload = {
@@ -18,7 +18,7 @@ export class RefreshTokenUseCase {
         email: payload.email,
         phone_number: payload.phone_number,
         role: payload.role,
-        store_id: payload.store_id // include for admin payload
+        store_id: payload.store_id, // include for admin payload
       };
 
       // clean undefined values
@@ -32,14 +32,14 @@ export class RefreshTokenUseCase {
         message: 'Success',
         access_token: this.jwtService.sign(newPayload, {
           secret: process.env.JWT_SECRET || 'secretKey',
-          expiresIn: '1h'
+          expiresIn: '1h',
         }),
         refresh_token: this.jwtService.sign(newPayload, {
           secret: process.env.JWT_REFRESH_SECRET || 'refreshSecretKey',
-          expiresIn: '7d'
+          expiresIn: '7d',
         }),
       };
-    } catch (error) {
+    } catch (_) {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }

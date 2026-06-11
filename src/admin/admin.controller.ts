@@ -3,7 +3,12 @@ import { SwitchStoreUseCase } from './application/use-cases/switch-store.usecase
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { SwitchStoreDto } from './dto/switch-store.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { CreateAdminUseCase, UpdateAdminUseCase, LoginAdminUseCase, GetAdminByIdUseCase } from './application/use-cases';
+import {
+  CreateAdminUseCase,
+  UpdateAdminUseCase,
+  LoginAdminUseCase,
+  GetAdminByIdUseCase,
+} from './application/use-cases';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt-auth.guard';
@@ -17,8 +22,8 @@ export class AdminController {
     private readonly loginAdminUseCase: LoginAdminUseCase,
     private readonly getAdminByIdUseCase: GetAdminByIdUseCase,
     private readonly switchStoreUseCase: SwitchStoreUseCase,
-    private readonly updateAdminUseCase: UpdateAdminUseCase
-  ) { }
+    private readonly updateAdminUseCase: UpdateAdminUseCase,
+  ) {}
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new admin' })
@@ -50,7 +55,6 @@ export class AdminController {
   async update(@Param('id') id: string, @Body() dto: UpdateAdminDto) {
     return this.updateAdminUseCase.execute(id, dto);
   }
-
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)

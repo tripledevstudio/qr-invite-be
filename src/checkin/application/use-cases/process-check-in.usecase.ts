@@ -17,7 +17,7 @@ export class ProcessCheckInUseCase {
     @Inject(USER_REPOSITORY_TOKEN) private readonly userRepo: UserRepository,
     @Inject(STORE_REPOSITORY_TOKEN) private readonly storeRepo: StoreRepository,
     @Inject(POINT_HISTORY_REPOSITORY_TOKEN)
-    private readonly pointHistoryRepo: PointHistoryRepository
+    private readonly pointHistoryRepo: PointHistoryRepository,
   ) {}
 
   async execute(storeId: string, dto: ProcessCheckInDto): Promise<CheckIn> {
@@ -67,7 +67,7 @@ export class ProcessCheckInUseCase {
       order_amount: dto.order_amount,
       discount_amount: discountAmount,
       final_amount: finalAmount,
-      points_awarded: pointsAwared
+      points_awarded: pointsAwared,
     });
 
     return this.checkInRepo.checkIn(checkInRecord);

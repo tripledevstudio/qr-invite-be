@@ -8,7 +8,7 @@ import { User } from '../../../user/domain/entities/user.entity';
 export class VerifyForgotPasswordOtpUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
   ) {}
 
   async execute(verifyOtpDto: VerifyOtpDto) {

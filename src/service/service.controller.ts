@@ -35,7 +35,7 @@ export class ServiceController {
     private readonly getServiceUseCase: GetServiceUseCase,
     private readonly listServicesUseCase: ListServicesUseCase,
     private readonly deleteServiceUseCase: DeleteServiceUseCase,
-    private readonly paginationService: PaginationService
+    private readonly paginationService: PaginationService,
   ) {}
 
   @Post()

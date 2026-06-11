@@ -22,6 +22,6 @@ import { DynamoModule } from '../dynamo/dynamo.module';
     GetServiceUseCase,
     ListServicesUseCase,
     DeleteServiceUseCase,
-  ]
+  ],
 })
 export class ServiceModule {}

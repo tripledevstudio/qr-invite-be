@@ -7,7 +7,7 @@ import { USER_REPOSITORY_TOKEN } from '../../domain/repositories/user.repository
 export class GetUserByInviteCodeUseCase {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
   ) {}
 
   async execute(inviteCode: string): Promise<User | null> {

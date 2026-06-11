@@ -9,7 +9,7 @@ import {
   Query,
   Req,
   UseGuards,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt-auth.guard';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
@@ -39,7 +39,7 @@ export class StoreController {
     private readonly deleteStoreUseCase: DeleteStoreUseCase,
     private readonly listStoreUsersUseCase: ListStoreUsersUseCase,
     private readonly paginationService: PaginationService,
-  ) { }
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new store' })

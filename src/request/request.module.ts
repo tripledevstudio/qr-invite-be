@@ -29,7 +29,7 @@ import { StoreModule } from '../store/store.module';
     REQUEST_REPOSITORY_TOKEN,
     POINT_HISTORY_REPOSITORY_TOKEN,
     ApproveRequestUseCase,
-    ListRequestsUseCase
+    ListRequestsUseCase,
   ],
 })
 export class RequestModule {}

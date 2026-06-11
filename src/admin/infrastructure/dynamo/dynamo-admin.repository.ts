@@ -7,7 +7,7 @@ import {
   GetCommand,
   UpdateCommand,
   DeleteCommand,
-  ScanCommand
+  ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { randomUUID } from 'crypto';
 import { ADMIN_TABLE_NAME } from '../../../dynamo/constants';
@@ -36,7 +36,7 @@ export class DynamoAdminRepository implements AdminRepository {
       new ScanCommand({
         TableName: this.tableName,
         FilterExpression: 'email = :email',
-        ExpressionAttributeValues: { ':email': email }
+        ExpressionAttributeValues: { ':email': email },
       }),
     );
     return (result.Items?.[0] as Admin) ?? null;
@@ -47,7 +47,7 @@ export class DynamoAdminRepository implements AdminRepository {
       new ScanCommand({
         TableName: this.tableName,
         FilterExpression: 'phone_number = :phone',
-        ExpressionAttributeValues: { ':phone': phone }
+        ExpressionAttributeValues: { ':phone': phone },
       }),
     );
     return (result.Items?.[0] as Admin) ?? null;
@@ -58,7 +58,7 @@ export class DynamoAdminRepository implements AdminRepository {
       new ScanCommand({
         TableName: this.tableName,
         FilterExpression: 'user_name = :userName',
-        ExpressionAttributeValues: { ':userName': userName }
+        ExpressionAttributeValues: { ':userName': userName },
       }),
     );
     return (result.Items?.[0] as Admin) ?? null;
@@ -69,7 +69,7 @@ export class DynamoAdminRepository implements AdminRepository {
       new ScanCommand({
         TableName: this.tableName,
         FilterExpression: 'store_id = :storeId',
-        ExpressionAttributeValues: { ':storeId': storeId }
+        ExpressionAttributeValues: { ':storeId': storeId },
       }),
     );
     return (result.Items?.[0] as Admin) ?? null;
@@ -97,7 +97,7 @@ export class DynamoAdminRepository implements AdminRepository {
         UpdateExpression: `SET ${updateExpressions}`,
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
-        ReturnValues: 'ALL_NEW'
+        ReturnValues: 'ALL_NEW',
       }),
     );
 

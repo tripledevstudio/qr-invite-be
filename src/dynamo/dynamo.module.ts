@@ -6,6 +6,6 @@ import { DynamoRepository } from './dynamo.repository';
 @Module({
   imports: [ConfigModule],
   providers: [DynamoDBService, DynamoRepository],
-  exports: [DynamoDBService, DynamoRepository]
+  exports: [DynamoDBService, DynamoRepository],
 })
 export class DynamoModule {}

@@ -26,9 +26,9 @@ export class UploadController {
         file: {
           type: 'string',
           format: 'binary',
-        }
+        },
       },
-    }
+    },
   })
   async uploadImage(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
     if (!file) {
@@ -47,7 +47,7 @@ export class UploadController {
         base64: { type: 'string' },
       },
       required: ['base64'],
-    }
+    },
   })
   async uploadBase64(@Body('base64') base64: string): Promise<{ url: string }> {
     if (!base64) {

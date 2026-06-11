@@ -31,7 +31,7 @@ export class DynamoDBService implements OnModuleInit {
       credentials: {
         accessKeyId: accessKeyId || '',
         secretAccessKey: secretAccessKey || '',
-      }
+      },
     });
 
     this.docClient = DynamoDBDocumentClient.from(this.client);
@@ -63,14 +63,14 @@ export class DynamoDBService implements OnModuleInit {
                 TableName: tableName,
                 AttributeDefinitions: [
                   { AttributeName: 'store_id', AttributeType: 'S' },
-                  { AttributeName: 'user_id', AttributeType: 'S' }
+                  { AttributeName: 'user_id', AttributeType: 'S' },
                 ],
                 KeySchema: [
                   { AttributeName: 'store_id', KeyType: 'HASH' },
-                  { AttributeName: 'user_id', KeyType: 'RANGE' }
+                  { AttributeName: 'user_id', KeyType: 'RANGE' },
                 ],
                 BillingMode: 'PAY_PER_REQUEST',
-              })
+              }),
             );
           } else {
             // Default schema with 'id' as Partition Key for auto-provisioning
@@ -80,7 +80,7 @@ export class DynamoDBService implements OnModuleInit {
                 AttributeDefinitions: [{ AttributeName: 'id', AttributeType: 'S' }],
                 KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
                 BillingMode: 'PAY_PER_REQUEST',
-              })
+              }),
             );
           }
         } else {

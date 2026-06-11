@@ -48,7 +48,7 @@ export class UserService {
         UpdateExpression: `SET ${updateExpressions}`,
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
-        ReturnValues: 'ALL_NEW'
+        ReturnValues: 'ALL_NEW',
       }),
     );
     return this.findOne(id);

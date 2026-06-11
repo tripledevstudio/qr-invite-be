@@ -7,7 +7,7 @@ import type { AdminRepository } from '../../domain/repositories/admin.repository
 export class GetAdminByIdUseCase {
   constructor(
     @Inject(ADMIN_REPOSITORY_TOKEN)
-    private readonly adminRepository: AdminRepository
+    private readonly adminRepository: AdminRepository,
   ) {}
 
   async execute(id: string): Promise<Admin | null> {

@@ -7,5 +7,5 @@ export default () => ({
   },
   jwt: {
     jwtSecret: process.env.JWT_SECRET,
-  }
+  },
 });

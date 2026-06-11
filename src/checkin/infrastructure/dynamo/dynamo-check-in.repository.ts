@@ -80,7 +80,7 @@ export class DynamoCheckInRepository implements CheckInRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      })
+      }),
     );
 
     return this.findOne(id);

@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, IsISO8601 } from 'class-validator';
+import { IsOptional, IsISO8601 } from 'class-validator';
 
 /**
  * DTO for filtering check‑in logs.

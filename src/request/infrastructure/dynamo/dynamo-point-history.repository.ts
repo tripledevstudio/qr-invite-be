@@ -24,7 +24,7 @@ export class DynamoPointHistoryRepository implements PointHistoryRepository {
 
   async findById(id: string): Promise<PointHistory | null> {
     const result = await this.dynamoRepository.send(
-      new GetCommand({ TableName: this.tableName, Key: { id } })
+      new GetCommand({ TableName: this.tableName, Key: { id } }),
     );
     return (result.Item as PointHistory) ?? null;
   }
@@ -35,7 +35,7 @@ export class DynamoPointHistoryRepository implements PointHistoryRepository {
         TableName: this.tableName,
         FilterExpression: 'user_id = :user_id',
         ExpressionAttributeValues: { ':user_id': userId },
-      })
+      }),
     );
     return (result.Items as PointHistory[]) ?? [];
   }

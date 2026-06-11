@@ -12,7 +12,7 @@ export class ListStoreUsersUseCase {
     @Inject(STORE_USER_REPOSITORY_TOKEN)
     private readonly storeUserRepository: StoreUserRepository,
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   async execute(storeId: string, query: ListStoreUsersDto): Promise<PaginationResponse<StoreUser>> {
     // Verify store existence could be added, but we assume valid storeId
@@ -71,7 +71,9 @@ export class ListStoreUsersUseCase {
       if (typeof valA === 'string') valA = valA.toLowerCase();
       if (typeof valB === 'string') valB = valB.toLowerCase();
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (valA < valB) return order === 'asc' ? -1 : 1;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (valA > valB) return order === 'asc' ? 1 : -1;
       return 0;
     });

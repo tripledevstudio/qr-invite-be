@@ -69,7 +69,7 @@ export class ApproveRequestUseCase {
               gender: user.gender,
               birth_date: user.birth_date,
               occupation: user.occupation,
-            })
+            }),
           );
 
           // Update collaborator_count for the store

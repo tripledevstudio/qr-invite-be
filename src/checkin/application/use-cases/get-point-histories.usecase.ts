@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { POINT_HISTORY_REPOSITORY_TOKEN } from '../../../request/domain/repositories/point-history.repository';
 import type { PointHistoryRepository } from '../../../request/domain/repositories/point-history.repository';
-import { PointHistory } from '../../../request/domain/entities/point-history.entity';
 import { USER_REPOSITORY_TOKEN } from '../../../user/domain/repositories/user.repository';
 import type { UserRepository } from '../../../user/domain/repositories/user.repository';
 import { STORE_REPOSITORY_TOKEN } from '../../../store/domain/repositories/store.repository';
@@ -15,8 +14,8 @@ export class GetPointHistoriesUseCase {
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepo: UserRepository,
     @Inject(STORE_REPOSITORY_TOKEN)
-    private readonly storeRepo: StoreRepository
-  ) {}
+    private readonly storeRepo: StoreRepository,
+  ) { }
 
   async execute(userId: string, storeId?: string): Promise<any[]> {
     const histories = await this.pointHistoryRepo.findByUserId(userId);
@@ -27,7 +26,7 @@ export class GetPointHistoriesUseCase {
         const [user, store, collaborator] = await Promise.all([
           this.userRepo.findById(h.user_id),
           this.storeRepo.findOne(h.store_id ?? ''),
-          h.collaborator_id ? this.userRepo.findById(h.collaborator_id) : Promise.resolve(null)
+          h.collaborator_id ? this.userRepo.findById(h.collaborator_id) : Promise.resolve(null),
         ]);
 
         return {
@@ -37,9 +36,9 @@ export class GetPointHistoriesUseCase {
           collaborator: collaborator
             ? { id: collaborator.id, name: collaborator.name, avatar: collaborator.avatar }
             : null,
-          is_income: (h.amount ?? 0) > 0
+          is_income: (h.amount ?? 0) > 0,
         };
-      })
+      }),
     );
 
     return enriched;

@@ -16,14 +16,14 @@ export class UpdateUserUseCase {
     @Inject(STORE_REPOSITORY_TOKEN)
     private readonly storeRepository: StoreRepository,
     @Inject(STORE_USER_REPOSITORY_TOKEN)
-    private readonly storeUserRepository: StoreUserRepository
+    private readonly storeUserRepository: StoreUserRepository,
   ) {}
 
   async execute(id: string, dto: Partial<User>): Promise<User> {
     const oldUser = await this.userRepository.findById(id);
     const updateData: Partial<User> = {
       ...dto,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
     const updatedUser = await this.userRepository.update(id, updateData);
 
@@ -38,7 +38,7 @@ export class UpdateUserUseCase {
       // Update collaborator count after removal
       const remaining = await this.storeUserRepository.findByStoreId(storeId);
       await this.storeRepository.update(storeId, {
-        collaborator_count: remaining.length
+        collaborator_count: remaining.length,
       });
     }
 
@@ -54,13 +54,13 @@ export class UpdateUserUseCase {
           role: updatedUser.role,
           gender: updatedUser.gender,
           birth_date: updatedUser.birth_date,
-          occupation: updatedUser.occupation
+          occupation: updatedUser.occupation,
         }),
       );
       // Update collaborator count after upsert
       const storeUsers = await this.storeUserRepository.findByStoreId(storeId);
       await this.storeRepository.update(storeId, {
-        collaborator_count: storeUsers.length
+        collaborator_count: storeUsers.length,
       });
     }
 

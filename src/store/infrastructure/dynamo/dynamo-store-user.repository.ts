@@ -28,7 +28,7 @@ export class DynamoStoreUserRepository implements StoreUserRepository {
         TableName: this.tableName,
         KeyConditionExpression: 'store_id = :sid',
         ExpressionAttributeValues: { ':sid': storeId },
-      })
+      }),
     );
     return (result.Items ?? []) as StoreUser[];
   }
@@ -38,7 +38,7 @@ export class DynamoStoreUserRepository implements StoreUserRepository {
       new DeleteCommand({
         TableName: this.tableName,
         Key: { store_id: storeId, user_id: userId },
-      })
+      }),
     );
   }
 }

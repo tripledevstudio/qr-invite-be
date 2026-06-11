@@ -7,7 +7,7 @@ import { ListRequestsDto } from '../../dto/list-requests.dto';
 export class ListRequestsUseCase {
   constructor(
     @Inject(REQUEST_REPOSITORY_TOKEN)
-    private readonly requestRepository: RequestRepository
+    private readonly requestRepository: RequestRepository,
   ) {}
 
   async execute(filters: ListRequestsDto) {
@@ -16,7 +16,7 @@ export class ListRequestsUseCase {
       status: filters.status,
       store_id: filters.store_id,
       sort_by: filters.sort_by,
-      sort_order: filters.sort_order
+      sort_order: filters.sort_order,
     });
   }
 }

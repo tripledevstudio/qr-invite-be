@@ -20,9 +20,9 @@ import { GetUserByInviteCodeUseCase } from './application/use-cases/get-user-by-
     GetUserUseCase,
     UpdateUserUseCase,
     DeleteUserUseCase,
-    GetUserByInviteCodeUseCase
+    GetUserByInviteCodeUseCase,
   ],
   controllers: [UserController],
-  exports: [USER_REPOSITORY_TOKEN]
+  exports: [USER_REPOSITORY_TOKEN],
 })
 export class UserModule {}

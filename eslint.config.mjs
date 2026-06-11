@@ -43,7 +43,6 @@ export default tseslint.config(
       'no-constant-condition': 'warn',
       '@typescript-eslint/no-unused-expressions': 'warn',
       "prettier/prettier": ["warn", { endOfLine: "auto" }],
-      "comma-dangle": ["warn", "never"],
-    },
+          },
   },
 );

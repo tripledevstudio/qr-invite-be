@@ -20,11 +20,11 @@ import { RequestModule } from '../request/request.module';
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secretKey',
-      signOptions: { expiresIn: '1h' }
+      signOptions: { expiresIn: '1h' },
     }),
     UserModule,
     StoreModule,
-    RequestModule
+    RequestModule,
   ],
   providers: [
     RegisterUseCase,
@@ -40,6 +40,6 @@ import { RequestModule } from '../request/request.module';
     JwtAuthGuard,
   ],
   controllers: [AuthController],
-  exports: [JwtAuthGuard]
+  exports: [JwtAuthGuard],
 })
 export class AuthModule {}

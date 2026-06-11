@@ -20,7 +20,7 @@ export class DynamoRequestRepository implements RequestRepository {
 
   async findById(id: string): Promise<Request | null> {
     const result = await this.dynamoRepository.send(
-      new GetCommand({ TableName: this.tableName, Key: { id } })
+      new GetCommand({ TableName: this.tableName, Key: { id } }),
     );
     return (result.Item as Request) ?? null;
   }
@@ -48,7 +48,7 @@ export class DynamoRequestRepository implements RequestRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      })
+      }),
     );
 
     return this.findById(id);
@@ -60,7 +60,7 @@ export class DynamoRequestRepository implements RequestRepository {
         TableName: this.tableName,
         FilterExpression: 'user_id = :user_id',
         ExpressionAttributeValues: { ':user_id': userId },
-      })
+      }),
     );
     return (result.Items as Request[]) ?? [];
   }
@@ -102,12 +102,12 @@ export class DynamoRequestRepository implements RequestRepository {
         TableName: this.tableName,
         ...(filterExpression && { FilterExpression: filterExpression }),
         ...(Object.keys(expressionAttributeNames).length > 0 && {
-          ExpressionAttributeNames: expressionAttributeNames
+          ExpressionAttributeNames: expressionAttributeNames,
         }),
         ...(Object.keys(expressionAttributeValues).length > 0 && {
-          ExpressionAttributeValues: expressionAttributeValues
+          ExpressionAttributeValues: expressionAttributeValues,
         }),
-      })
+      }),
     );
 
     const items = (result.Items as Request[]) ?? [];

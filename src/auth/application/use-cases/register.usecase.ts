@@ -21,7 +21,7 @@ export class RegisterUseCase {
     private readonly storeRepository: StoreRepository,
     @Inject(REQUEST_REPOSITORY_TOKEN)
     private readonly requestRepository: RequestRepository,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   async execute(registerDto: RegisterDto) {
@@ -87,7 +87,7 @@ export class RegisterUseCase {
       password: hashedPassword,
       invite_code: inviteCode,
       is_verify: false,
-      ...(userStoreIds ? { store_ids: userStoreIds } : {})
+      ...(userStoreIds ? { store_ids: userStoreIds } : {}),
     });
 
     const createdUser = await this.userRepository.create(user);
@@ -95,7 +95,7 @@ export class RegisterUseCase {
       new Request({
         user_id: createdUser.id,
         type: RequestType.REGISTER,
-        ...(storeId ? { store_id: storeId } : {})
+        ...(storeId ? { store_id: storeId } : {}),
       }),
     );
 

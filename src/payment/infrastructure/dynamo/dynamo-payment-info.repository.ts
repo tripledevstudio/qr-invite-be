@@ -13,7 +13,7 @@ export class DynamoPaymentInfoRepository implements PaymentInfoRepository {
 
   async getByUserId(userId: string): Promise<PaymentInfo | null> {
     const result = await this.dynamoRepository.send(
-      new GetCommand({ TableName: this.tableName, Key: { id: userId } })
+      new GetCommand({ TableName: this.tableName, Key: { id: userId } }),
     );
     return (result.Item as PaymentInfo) ?? null;
   }
@@ -49,7 +49,7 @@ export class DynamoPaymentInfoRepository implements PaymentInfoRepository {
         Key: { id: userId },
         UpdateExpression: `SET ${updateExpressionsList.join(', ')}`,
         ExpressionAttributeNames: expressionAttributeNames,
-        ExpressionAttributeValues: expressionAttributeValues
+        ExpressionAttributeValues: expressionAttributeValues,
       }),
     );
 
@@ -58,7 +58,7 @@ export class DynamoPaymentInfoRepository implements PaymentInfoRepository {
 
   async delete(userId: string): Promise<void> {
     await this.dynamoRepository.send(
-      new DeleteCommand({ TableName: this.tableName, Key: { id: userId } })
+      new DeleteCommand({ TableName: this.tableName, Key: { id: userId } }),
     );
   }
 }

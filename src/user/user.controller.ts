@@ -21,7 +21,7 @@ export class UserController {
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
     private readonly getPaymentInfoUseCase: GetPaymentInfoUseCase,
-    private readonly getUserByInviteCodeUseCase: GetUserByInviteCodeUseCase
+    private readonly getUserByInviteCodeUseCase: GetUserByInviteCodeUseCase,
   ) {}
 
   @Post()
@@ -41,7 +41,7 @@ export class UserController {
     }
     return {
       ...user,
-      bank_info: bankInfo
+      bank_info: bankInfo,
     };
   }
 

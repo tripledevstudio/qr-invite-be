@@ -14,7 +14,7 @@ export class DeleteUserUseCase {
     @Inject(STORE_REPOSITORY_TOKEN)
     private readonly storeRepository: StoreRepository,
     @Inject(STORE_USER_REPOSITORY_TOKEN)
-    private readonly storeUserRepository: StoreUserRepository
+    private readonly storeUserRepository: StoreUserRepository,
   ) {}
 
   async execute(id: string): Promise<void> {
@@ -25,7 +25,7 @@ export class DeleteUserUseCase {
         await this.storeUserRepository.delete(storeId, id);
         const remaining = await this.storeUserRepository.findByStoreId(storeId);
         await this.storeRepository.update(storeId, {
-          collaborator_count: remaining.length
+          collaborator_count: remaining.length,
         });
       }
     }

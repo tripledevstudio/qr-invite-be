@@ -26,7 +26,7 @@ export class DynamoUserRepository implements UserRepository {
 
   async findById(id: string): Promise<User | null> {
     const result = await this.dynamoRepository.send(
-      new GetCommand({ TableName: this.tableName, Key: { id } })
+      new GetCommand({ TableName: this.tableName, Key: { id } }),
     );
     return (result.Item as User) ?? null;
   }
@@ -37,7 +37,7 @@ export class DynamoUserRepository implements UserRepository {
         TableName: this.tableName,
         FilterExpression: 'email = :email',
         ExpressionAttributeValues: { ':email': email },
-      })
+      }),
     );
     return (result.Items?.[0] as User) ?? null;
   }
@@ -48,7 +48,7 @@ export class DynamoUserRepository implements UserRepository {
         TableName: this.tableName,
         FilterExpression: 'phone_number = :phone',
         ExpressionAttributeValues: { ':phone': phone },
-      })
+      }),
     );
     return (result.Items?.[0] as User) ?? null;
   }
@@ -60,7 +60,7 @@ export class DynamoUserRepository implements UserRepository {
         TableName: this.tableName,
         FilterExpression: 'user_name = :userName',
         ExpressionAttributeValues: { ':userName': userName },
-      })
+      }),
     );
     return (result.Items?.[0] as User) ?? null;
   }
@@ -73,9 +73,9 @@ export class DynamoUserRepository implements UserRepository {
           'invite_code = :invite AND (attribute_not_exists(deleted_at) OR deleted_at = :null_val)',
         ExpressionAttributeValues: {
           ':invite': inviteCode,
-          ':null_val': null
-        }
-      })
+          ':null_val': null,
+        },
+      }),
     );
     return (result.Items?.[0] as User) ?? null;
   }
@@ -103,7 +103,7 @@ export class DynamoUserRepository implements UserRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      })
+      }),
     );
 
     return (await this.findById(id)) as User;

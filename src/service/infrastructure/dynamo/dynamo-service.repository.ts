@@ -76,7 +76,7 @@ export class DynamoServiceRepository implements ServiceRepository {
         ExpressionAttributeNames: expressionAttributeNames,
         ExpressionAttributeValues: expressionAttributeValues,
         ReturnValues: 'ALL_NEW',
-      })
+      }),
     );
 
     return this.findOne(id);

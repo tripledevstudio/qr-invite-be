@@ -7,7 +7,7 @@ import { PAYMENT_INFO_REPOSITORY_TOKEN } from '../../domain/repositories/payment
 export class GetPaymentInfoUseCase {
   constructor(
     @Inject(PAYMENT_INFO_REPOSITORY_TOKEN)
-    private readonly repo: PaymentInfoRepository
+    private readonly repo: PaymentInfoRepository,
   ) {}
 
   async execute(userId: string): Promise<PaymentInfo | null> {
