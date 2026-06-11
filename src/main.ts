@@ -4,47 +4,38 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import express from 'express';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+const server = express();
+
+export async function bootstrap() {
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
   app.enableCors();
-  // Global pipes
   app.useGlobalPipes(new ValidationPipe());
-
-  // Global filters
   app.useGlobalFilters(new HttpExceptionFilter());
-
-  // Global interceptors
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  // Global prefix
-  app.setGlobalPrefix('api', { exclude: ['/'] });
-
-  // Enable API versioning
+  app.setGlobalPrefix('api', { exclude: ['/docs'] });
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
 
-  // Configure Swagger
   const config = new DocumentBuilder()
     .setTitle('QR INVITE API')
     .setDescription('API documentation for the NestJS application')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
-  const document = SwaggerModule.createDocument(app, config);
 
+  const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, {
     customSiteTitle: 'QR INVITE API Docs',
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
+    swaggerOptions: { persistAuthorization: true },
   });
 
-  app.useGlobalPipes(new ValidationPipe());
-
-  // await app.listen(3000);
+  await app.init();
+  return server;
 }
-bootstrap();
