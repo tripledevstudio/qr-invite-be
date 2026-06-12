@@ -7,7 +7,8 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
 
-const server = express();
+const expressInstance = (express as any).default || express;
+const server = expressInstance();
 
 export async function bootstrap() {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
