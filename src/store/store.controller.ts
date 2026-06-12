@@ -53,8 +53,9 @@ export class StoreController {
   @ApiOperation({ summary: 'Get list of stores (paginated)' })
   async findAll(@Query() pagination: PaginationDto, @Req() req: any) {
     // if (req.user?.role !== 'ADMIN') throw new ForbiddenException('Only ADMIN can list stores');
-    const adminId = req.user?.user_id ?? req.user?.sub ?? req.user?.id;
-    const list = await this.listStoresUseCase.execute(adminId);
+    // const adminId = req.user?.user_id ?? req.user?.sub ?? req.user?.id;
+    // const list = await this.listStoresUseCase.execute(adminId);
+    const list = await this.listStoresUseCase.execute();
     const page = pagination.page ? Number(pagination.page) : 1;
     const pageSize = pagination.page_size ? Number(pagination.page_size) : 10;
     return this.paginationService.paginate(list, page, pageSize);
@@ -73,7 +74,7 @@ export class StoreController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get store by ID' })
-  async findOne(@Param('id') id: string, @Req() req: any) {
+  async findOne(@Param('id') id: string) {
     // if (req.user?.role !== 'ADMIN') throw new ForbiddenException('Only ADMIN can access store');
     return this.getStoreUseCase.execute(id);
   }

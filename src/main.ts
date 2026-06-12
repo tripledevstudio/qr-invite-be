@@ -19,7 +19,7 @@ export async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
 
   app.setGlobalPrefix('api', {
-    exclude: ['/']
+    exclude: ['/'],
   });
   app.enableVersioning({
     type: VersioningType.URI,

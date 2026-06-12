@@ -12,7 +12,7 @@ export class LoginUseCase {
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async execute(loginDto: LoginDto) {
     const { phone_number, password } = loginDto as any;
