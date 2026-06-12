@@ -12,21 +12,18 @@ export class LoginUseCase {
     @Inject(USER_REPOSITORY_TOKEN)
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async execute(loginDto: LoginDto) {
-    const { phone_number, user_name, password } = loginDto as any;
+    const { phone_number, password } = loginDto as any;
 
-    if (!phone_number && !user_name) {
-      throw new BadRequestException('Phone number or user name is required');
+    if (!phone_number) {
+      throw new BadRequestException('Phone number is required');
     }
 
     let user: User | null = null;
-    if (phone_number) {
-      user = await this.userRepository.findByPhone(phone_number);
-    } else if (user_name) {
-      user = await this.userRepository.findByUserName(user_name);
-    }
+
+    user = await this.userRepository.findByPhone(phone_number);
 
     if (!user || !user.password) {
       throw new UnauthorizedException('Invalid credentials');
