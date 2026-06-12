@@ -161,15 +161,38 @@ export const welcomeHtml = `<!DOCTYPE html>
 
     @media (max-width: 768px) {
       .card {
-        padding: 32px 24px;
+        padding: 32px 20px;
+        margin: 10px;
+        border-radius: 20px;
       }
 
       h1 {
-        font-size: 32px;
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+
+      p {
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+
+      .actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
       }
 
       .stats {
-        grid-template-columns: 1rem;
+        grid-template-columns: 1fr; /* Sửa từ 1rem thành 1fr */
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 16px;
       }
     }
   </style>
@@ -195,7 +218,7 @@ export const welcomeHtml = `<!DOCTYPE html>
     </p>
 
     <div class="actions">
-      <a href="/api" class="btn btn-primary">
+      <a href="/docs" class="btn btn-primary">
         📚 API Documentation
       </a>
     </div>

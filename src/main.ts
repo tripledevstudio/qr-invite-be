@@ -5,7 +5,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
+import * as express from 'express';
 
 const server = express();
 
@@ -17,7 +17,9 @@ export async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    exclude: ['/']
+  });
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
@@ -42,5 +44,15 @@ export async function bootstrap() {
   });
 
   await app.init();
+
+  if (process.env.NODE_ENV !== 'production') {
+    await app.listen(3000);
+    console.log('Application is running on: http://localhost:3000');
+  }
+
   return server;
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  bootstrap();
 }
