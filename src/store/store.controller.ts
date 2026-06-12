@@ -39,7 +39,7 @@ export class StoreController {
     private readonly deleteStoreUseCase: DeleteStoreUseCase,
     private readonly listStoreUsersUseCase: ListStoreUsersUseCase,
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a new store' })
@@ -52,7 +52,7 @@ export class StoreController {
   @Get()
   @ApiOperation({ summary: 'Get list of stores (paginated)' })
   async findAll(@Query() pagination: PaginationDto, @Req() req: any) {
-    if (req.user?.role !== 'ADMIN') throw new ForbiddenException('Only ADMIN can list stores');
+    // if (req.user?.role !== 'ADMIN') throw new ForbiddenException('Only ADMIN can list stores');
     const adminId = req.user?.user_id ?? req.user?.sub ?? req.user?.id;
     const list = await this.listStoresUseCase.execute(adminId);
     const page = pagination.page ? Number(pagination.page) : 1;
@@ -74,7 +74,7 @@ export class StoreController {
   @Get(':id')
   @ApiOperation({ summary: 'Get store by ID' })
   async findOne(@Param('id') id: string, @Req() req: any) {
-    if (req.user?.role !== 'ADMIN') throw new ForbiddenException('Only ADMIN can access store');
+    // if (req.user?.role !== 'ADMIN') throw new ForbiddenException('Only ADMIN can access store');
     return this.getStoreUseCase.execute(id);
   }
 

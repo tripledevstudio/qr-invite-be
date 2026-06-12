@@ -9,13 +9,13 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { CheckInUseCase } from './application/use-cases/check-in.usecase';
+// import { CheckInUseCase } from './application/use-cases/check-in.usecase';
 import { ProcessCheckInUseCase } from './application/use-cases/process-check-in.usecase';
 import { ProcessCheckInDto } from './dto/process-checkin.dto';
 import { JwtAuthGuard } from '../auth/infrastructure/guards/jwt-auth.guard';
 import { GetLogsUseCase } from './application/use-cases/get-logs.usecase';
 import { GetPointHistoriesUseCase } from './application/use-cases/get-point-histories.usecase';
-import { CheckInDto } from './dto/check-in.dto';
+// import { CheckInDto } from './dto/check-in.dto';
 import { CheckInFilterDto } from './dto/check-in-filter.dto';
 import { PaginationDto } from '../common/pagination/pagination.dto';
 import { PaginationService } from '../common/pagination/pagination.service';
@@ -25,18 +25,18 @@ import { PaginationService } from '../common/pagination/pagination.service';
 @Controller('checkins')
 export class CheckInController {
   constructor(
-    private readonly checkInUseCase: CheckInUseCase,
+    // private readonly checkInUseCase: CheckInUseCase,
     private readonly processCheckInUseCase: ProcessCheckInUseCase,
     private readonly getPointHistoriesUseCase: GetPointHistoriesUseCase,
     private readonly getLogsUseCase: GetLogsUseCase,
     private readonly paginationService: PaginationService,
-  ) {}
+  ) { }
 
-  @Post()
-  @ApiOperation({ summary: 'Record a user check-in at a store' })
-  async checkIn(@Body() payload: CheckInDto) {
-    return this.checkInUseCase.execute(payload);
-  }
+  // @Post()
+  // @ApiOperation({ summary: 'Record a user check-in at a store' })
+  // async checkIn(@Body() payload: CheckInDto) {
+  //   return this.checkInUseCase.execute(payload);
+  // }
 
   @Post('process')
   @UseGuards(JwtAuthGuard)
