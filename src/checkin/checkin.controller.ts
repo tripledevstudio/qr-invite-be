@@ -30,7 +30,7 @@ export class CheckInController {
     private readonly getPointHistoriesUseCase: GetPointHistoriesUseCase,
     private readonly getLogsUseCase: GetLogsUseCase,
     private readonly paginationService: PaginationService,
-  ) { }
+  ) {}
 
   // @Post()
   // @ApiOperation({ summary: 'Record a user check-in at a store' })
